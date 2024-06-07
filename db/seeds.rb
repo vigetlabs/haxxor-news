@@ -8,10 +8,10 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 articles = [
-  { title: "Testing Rails Applications", link: "https://guides.rubyonrails.org/testing.html" },
-  { title: "Ruby on Rails Guides (v7.1.3.4)", link: "https://guides.rubyonrails.org/index.html" },
-  { title: "Getting Started with Rails", link: "https://guides.rubyonrails.org/getting_started.html" },
-  { title: "Active Record Basics", link: "https://guides.rubyonrails.org/active_record_basics.html" }
+  {title: "Testing Rails Applications", link: "https://guides.rubyonrails.org/testing.html"},
+  {title: "Ruby on Rails Guides (v7.1.3.4)", link: "https://guides.rubyonrails.org/index.html"},
+  {title: "Getting Started with Rails", link: "https://guides.rubyonrails.org/getting_started.html"},
+  {title: "Active Record Basics", link: "https://guides.rubyonrails.org/active_record_basics.html"}
 ]
 
 articles.each do |article_params|
