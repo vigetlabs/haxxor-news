@@ -2,7 +2,9 @@
 
 <%= form_with model: @article do |form| %>
   <div>
-    <%= form.label :title %><br>
+    <div>
+      <%= form.label :title %>
+    </div>
     <%= form.text_field :title %>
     <% @article.errors.full_messages_for(:title).each do |message| %>
       <div><%= message %></div>
@@ -10,8 +12,12 @@
   </div>
 
   <div>
-    <%= form.label :link %><br>
-    <%= form.text_area :link %><br>
+      <div>
+        <%= form.label :link %>
+      </div>
+      <div>
+        <%= form.text_area :link %>
+      </div>
     <% @article.errors.full_messages_for(:link).each do |message| %>
       <div><%= message %></div>
     <% end %>
