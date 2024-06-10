@@ -2,7 +2,7 @@ require "test_helper"
 
 class ArticlesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @article = articles(:one) 
+    @article = FactoryBot.create(:article)
   end
 
   test "should get index" do
