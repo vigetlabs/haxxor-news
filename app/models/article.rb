@@ -6,6 +6,7 @@
 # - link: must be present
 
 class Article < ApplicationRecord
+  belongs_to :user
   validates :title, presence: true
   validates :link, presence: true
 end
