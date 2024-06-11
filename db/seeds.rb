@@ -30,12 +30,9 @@ articles = [
   { title: "Active Record Basics", link: "https://guides.rubyonrails.org/active_record_basics.html" }
 ]
 
-# Assign articles to the first user
-user = User.first
-
 articles.each do |article_params|
   Article.find_or_create_by!(title: article_params[:title]) do |article|
     article.link = article_params[:link]
-    article.user = user
+    article.user = User.all.sample
   end
 end
