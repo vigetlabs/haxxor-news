@@ -10,8 +10,8 @@ A Hacker News clone where users can post articles.
 1. **Clone the repository:**
 
     ```sh
-    git clone https://github.com/yourusername/hacker_news_clone.git
-    cd hacker_news_clone
+    git clone git@github.com:vigetlabs/haxxor-news.git
+    cd haxxor_news
     ```
 
 2. **Install the required gems:**

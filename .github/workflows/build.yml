@@ -14,3 +14,5 @@ jobs:
           bundler-cache: true
       - name: standardrb
         run: bundle exec standardrb
+      - name: Run tests
+        run: rails test
