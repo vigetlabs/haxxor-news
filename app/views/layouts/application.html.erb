@@ -7,10 +7,18 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    
   </head>
 
   <body>
     <%= yield %>
+
+    <div>
+
+    <% if logged_in? %>
+      <%= button_to "Logout", sessions_path, method: :delete %>
+    <% else %>
+      <%= button_to "Login Page", login_path, method: :get %>
+    <% end %>
+    </div>
   </body>
 </html>

@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
   root "articles#index"
   resources :articles
-  resources :users, only: [:new, :create]
-
+  resources :users, only: [:create, :show]
+  get "/signup", to: "users#new"
+  get "/login", to: "sessions#new"
+  post "/sessions", to: "sessions#create"
+  delete "/sessions", to: "sessions#destroy"
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
