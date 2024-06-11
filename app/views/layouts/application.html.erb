@@ -13,12 +13,16 @@
     <%= yield %>
 
     <div>
-
+    <% if !home? %>
+    <%= button_to "Home", root_path, method: :get %>
+    <% end %>
     <% if logged_in? %>
       <%= button_to "Logout", sessions_path, method: :delete %>
     <% else %>
-      <%= button_to "Login Page", login_path, method: :get %>
+      <%= button_to "Login", login_path, method: :get %>
+      <%= button_to "Sign Up", signup_path, method: :get %>
     <% end %>
+    
     </div>
   </body>
 </html>
