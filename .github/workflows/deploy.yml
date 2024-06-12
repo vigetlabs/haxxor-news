@@ -1,0 +1,61 @@
+---
+name: Deploy
+on:
+  workflow_run:
+    workflows: ["Build"]
+    types: [completed]
+    branches:
+      - 'main'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout code repository
+        uses: actions/checkout@v4
+
+      - name: Set deployment environment
+        env:
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          echo "Set environment for branch: $BRANCH"
+
+          if [ $BRANCH = "main" ]; then
+            deploy_env="production"
+          else
+            echo "$(tput setaf 1)"No known environment for branch"$(tput sgr0)"
+            exit 1
+          fi
+
+          echo "DEPLOY_ENV=$deploy_env" >> "$GITHUB_ENV"
+          echo "Deploy env: $deploy_env"
+
+      - name: Set up ruby 3.0.0
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.0
+          bundler-cache: true
+
+      - name: Set git username
+        run: git config --global user.name "Github Actions"
+
+      - name: Install SSH deploy key
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p -m 700 ~/.ssh
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "$DEPLOY_KEY"
+          # Get the server IPs from Capistrano and add them to the known hosts
+          server_ips=($(bundle exec cap $DEPLOY_ENV server:ips))
+          for ip in "${server_ips[@]}"; do
+            ssh-keyscan "$ip" >> ~/.ssh/known_hosts
+          done
+
+      - name: Deploy
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: bundle exec cap "$DEPLOY_ENV" deploy
