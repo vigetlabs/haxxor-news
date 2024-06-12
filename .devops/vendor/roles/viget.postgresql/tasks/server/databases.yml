@@ -1,0 +1,17 @@
+---
+- tags: postgresql
+  become: yes
+  become_user: "{{ postgresql_server_user }}"
+  block:
+    - name: Create {{ db.name }} database
+      postgresql_db:
+        name:  "{{ db.name }}"
+        owner: "{{ db.owner }}"
+        state: "{{ db.state | default(omit) }}"
+
+    - name: Create database extensions
+      postgresql_ext:
+        db:   "{{ db.name }}"
+        name: "{{ item }}"
+      with_items: "{{ db.extensions | default([]) }}"
+      when: db.state | default('present') == 'present'

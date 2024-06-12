@@ -1,0 +1,21 @@
+---
+- tags: deploy
+  block:
+    # Get each public key and save it into an array.
+    #
+    # In the next step, we'll join with a newline and
+    # use as the full authorized_keys file
+    - set_fact:
+        _deploy_user_authorized_keys_content: []
+
+    - set_fact:
+        _deploy_user_authorized_keys_content: |
+          {{ _deploy_user_authorized_keys_content + [ lookup('file', deploy_user_keys_dir + '/' + item) ] }}
+      with_items: "{{ deploy_user_authorized_keys }}"
+
+    - name: Install deploy user's authorized keys
+      authorized_key:
+        user:      "{{ deploy_user }}"
+        state:     present
+        key:       "{{ _deploy_user_authorized_keys_content | join('\n') }}"
+        exclusive: yes

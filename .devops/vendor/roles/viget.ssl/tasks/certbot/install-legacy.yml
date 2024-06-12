@@ -1,0 +1,18 @@
+---
+- tags: ssl
+  block:
+    - name: Install certbot-auto
+      get_url:
+        url:   https://dl.eff.org/certbot-auto
+        dest:  /usr/bin/certbot
+        owner: root
+        group: root
+        mode:  "0775"
+
+    - name: Install autorenew cron.d task
+      template:
+        src:   certbot/legacy/renew-cron.j2
+        dest:  /etc/cron.d/certbot
+        owner: root
+        group: root
+        mode:  "0644"

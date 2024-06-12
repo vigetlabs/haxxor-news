@@ -1,0 +1,35 @@
+---
+- tags: nginx
+  block:
+    - name: Install Passenger dependencies
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - dirmngr
+          - gnupg
+        state: present
+
+    - name: Add key
+      apt_key:
+        keyserver: hkp://keyserver.ubuntu.com:80
+        id:        561F9B9CAC40B2F7
+
+    - name: Add Passenger repository
+      apt_repository:
+        filename:     passenger
+        repo:         "deb https://oss-binaries.phusionpassenger.com/apt/passenger {{ nginx_passenger_repository }} main"
+        update_cache: yes
+
+    - name: Install Passenger
+      apt:
+        pkg:
+          - nginx-extras
+          - passenger
+        state: present
+
+    - name: Install Passenger nginx module
+      apt:
+        pkg:   libnginx-mod-http-passenger
+        state: present
+      when: ansible_distribution_major_version | int >= 18

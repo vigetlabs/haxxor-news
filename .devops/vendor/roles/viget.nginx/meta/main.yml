@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  version: 5.5.3
+
+  min_ansible_version: 2.7.0
+
+  author:      viget
+  description: Install and configure nginx
+  company:     Viget Labs
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - 16.04
+        - 18.04
+        - 20.04
+
+  galaxy_tags: []
+
+dependencies: []

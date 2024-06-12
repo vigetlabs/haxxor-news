@@ -1,0 +1,20 @@
+---
+- tags: nginx
+  block:
+    - set_fact:
+        __nginx_local_templates_dir: "{{ playbook_dir }}/templates/nginx"
+
+    - include_tasks: deprecations.yml
+    - include_tasks: local-setup.yml
+
+    - include_tasks: install.yml
+      when: nginx_install == True
+
+    - include_tasks: configure-nginx.yml
+    - include_tasks: configure-default-site.yml
+    - include_tasks: disable-modules.yml
+
+    - include_tasks: site/configure.yml
+      with_items: "{{ nginx_sites }}"
+      loop_control:
+        loop_var: site

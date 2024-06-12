@@ -1,0 +1,8 @@
+---
+ansible_python_interpreter: /usr/bin/python3
+
+# base
+base_timezone: America/New_York
+
+# deploy
+deploy_user_authorized_keys: []

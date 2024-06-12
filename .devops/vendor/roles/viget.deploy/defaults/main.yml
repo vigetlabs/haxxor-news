@@ -1,0 +1,22 @@
+---
+deploy_user_create_user: yes
+
+deploy_user: deploy
+deploy_user_home: "/home/{{ deploy_user }}"
+deploy_user_groups:
+  - www-data
+
+deploy_user_authorized_keys: []
+
+deploy_user_keys_dir: "{{ inventory_dir }}"
+
+deploy_user_generate_ssh_key: no
+
+deploy_user_fetch_ssh_key: no
+deploy_user_fetch_ssh_key_path: "{{ inventory_dir }}/keys/{{ inventory_hostname }}/deploy.pub"
+
+deploy_user_install_ssh_key: no
+deploy_user_ssh_public_key:
+deploy_user_ssh_private_key:
+
+deploy_user_cache_github_host_key: yes

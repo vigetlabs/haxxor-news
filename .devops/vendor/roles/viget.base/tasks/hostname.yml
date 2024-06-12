@@ -1,0 +1,6 @@
+---
+- tags: base
+  block:
+    - name: "hostname : Set the system's hostname"
+      hostname:
+        name: "{{ base_hostname }}"

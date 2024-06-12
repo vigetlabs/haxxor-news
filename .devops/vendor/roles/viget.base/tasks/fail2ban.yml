@@ -1,0 +1,8 @@
+---
+- tags: base
+  block:
+    - name: "fail2ban : Install fail2ban"
+      apt:
+        pkg:          fail2ban
+        state:        present
+        update_cache: yes

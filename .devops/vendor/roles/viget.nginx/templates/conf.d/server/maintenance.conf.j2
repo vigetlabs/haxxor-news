@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+if (-f $document_root/maintenance.on) {
+  return 503;
+}
+
+error_page 503 @maintenance;
+
+location @maintenance {
+  rewrite ^(.*)$ /503.html break;
+}

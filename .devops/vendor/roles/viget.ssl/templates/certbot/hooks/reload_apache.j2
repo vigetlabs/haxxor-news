@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# {{ ansible_managed }}
+
+set -e
+
+apache2ctl configtest 2>&1 && service apache2 reload

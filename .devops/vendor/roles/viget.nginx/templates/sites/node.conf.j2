@@ -1,0 +1,11 @@
+<% extends "master.conf.j2" %>
+
+<% block config -%>
+  index index.html;
+
+  passenger_enabled      on;
+  passenger_app_type     node;
+  passenger_app_env      {{ site.environment }};
+  passenger_nodejs       /usr/local/bin/node;
+  passenger_startup_file app.js;
+<% endblock %>

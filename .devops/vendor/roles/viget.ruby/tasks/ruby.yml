@@ -1,0 +1,55 @@
+---
+- tags: ruby
+  block:
+    - name: "Check for ruby_version variable"
+      fail:
+        msg: "ruby_version variable must be set"
+      when: ruby_version is undefined or ruby_version is none
+
+    - name: "Check for ruby_bundler_version variable"
+      fail:
+        msg: "ruby_bundler_version variable must be set"
+      when: ruby_bundler_version is undefined or ruby_bundler_version is none
+
+    - name: Check if Ruby installed
+      shell: >
+        ruby --version | grep "{{ ruby_version }}"
+      args:
+        executable: /bin/bash
+      register: __ruby_installed
+      failed_when: no
+      changed_when: no
+      check_mode: no
+
+    - set_fact:
+        __ruby_installed: "{{ __ruby_installed.rc == 0 }}"
+
+    - when: not __ruby_installed
+      block:
+        - name: Create temporary directory
+          tempfile:
+            state: directory
+            suffix: ruby-build
+          register: __ruby_build_tmp_path
+
+        - set_fact:
+            __ruby_build_tmp_path: "{{ __ruby_build_tmp_path.path }}"
+
+        - name: Clone ruby-build repo
+          git:
+            repo:    "{{ ruby_build_source }}"
+            dest:    "{{ __ruby_build_tmp_path }}"
+            version: "{{ ruby_build_version }}"
+
+        - name: Install Ruby {{ ruby_version }}
+          shell: >
+            RUBY_CONFIGURE_OPTS=--disable-install-doc \
+            cd {{ __ruby_build_tmp_path }} \
+            && bin/ruby-build -v {{ ruby_version }} /usr/local
+          args:
+            executable: /bin/bash
+
+        - name: Remove ruby-build tmp directory
+          file:
+            path: "{{ __ruby_build_tmp_path }}"
+            state: absent

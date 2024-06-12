@@ -1,0 +1,43 @@
+---
+- name:  Configure Haxxor News server
+  hosts: haxxornews
+
+  become:      yes
+  become_user: root
+
+  pre_tasks:
+    - name: Update cache if needed
+      apt:
+        update_cache:     yes
+        cache_valid_time: 3600
+
+  roles:
+    - name: viget.base
+      tags: base
+
+    - name: viget.firewall
+      tags: firewall
+
+    - name: viget.deploy
+      tags: deploy
+
+    - name: viget.imagemagick
+      tags: imagemagick
+
+    - name: viget.ruby
+      tags: ruby
+
+    - name: viget.ssl
+      tags: ssl
+
+    - name: viget.nginx
+      tags: nginx
+
+    - name: viget.rails
+      tags: rails
+
+  tasks:
+    - name: Install libvips
+      apt:
+        name: libvips
+        state: present

@@ -1,0 +1,6 @@
+---
+- tags: postgresql
+  block:
+    - name: Install PostgreSQL client dependencies
+      apt:
+        pkg: "{{ postgresql_client_dependencies }}"

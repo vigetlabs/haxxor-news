@@ -1,0 +1,16 @@
+---
+- tags: postgresql
+  block:
+    - set_fact:
+        __postgresql_user_roles: "{{ user.roles | default([]) }}"
+
+    - name: "Create {{ user.name }} PostgreSQL user"
+      become: yes
+      become_user: "{{ postgresql_server_user }}"
+      postgresql_user:
+        name:            "{{ user.name }}"
+        password:        "{{ user.password | default(omit) }}"
+        role_attr_flags: "{{ (postgresql_user_default_roles + __postgresql_user_roles) | join(',') }}"
+        encrypted:       yes
+        state:           "{{ user.state | default(omit) }}"
+      notify: restart postgresql

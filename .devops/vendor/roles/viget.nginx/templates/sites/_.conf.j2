@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+
+server {
+  listen 80 default_server;
+  listen 443 ssl default_server;
+
+  server_name _;
+
+  ssl_certificate     /etc/ssl/nginx-default/selfsigned/cert.pem;
+  ssl_certificate_key /etc/ssl/nginx-default/selfsigned/privkey.pem;
+  ssl_session_tickets off;
+
+  return 444;
+}

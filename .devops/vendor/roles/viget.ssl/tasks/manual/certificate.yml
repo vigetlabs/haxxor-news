@@ -1,0 +1,53 @@
+---
+- tags: ssl
+  block:
+    - set_fact:
+        __ssl_cert_root: "{{ ssl_root }}/{{ cert.domain }}"
+
+    - set_fact:
+        __ssl_manual_root: "{{ __ssl_cert_root }}/manual"
+
+    - set_fact:
+        __ssl_manual_private_key: "{{ __ssl_manual_root }}/privkey.pem"
+        __ssl_manual_public_key:  "{{ __ssl_manual_root }}/pubkey.pem"
+        __ssl_manual_csr:         "{{ __ssl_manual_root }}/csr.pem"
+        __ssl_manual_cert:        "{{ __ssl_manual_root }}/cert.pem"
+        __ssl_manual_chain:       "{{ __ssl_manual_root }}/chain.pem"
+        __ssl_manual_fullchain:   "{{ __ssl_manual_root }}/fullchain.pem"
+
+    - include_tasks: ../init-domain.yml
+      vars:
+        domain: "{{ cert.domain }}"
+
+    - name: Install {{ cert.domain }} certificate
+      copy:
+        content: "{{ cert.certificate }}"
+        dest:    "{{ __ssl_manual_cert }}"
+
+    - name: Install {{ cert.domain }} private key
+      copy:
+        content: "{{ cert.private_key }}"
+        dest:    "{{ __ssl_manual_private_key }}"
+
+    - name: Install {{ cert.domain }} public key
+      copy:
+        content: "{{ cert.public_key }}"
+        dest:    "{{ __ssl_manual_public_key }}"
+      when: cert.public_key is defined
+
+    - name: Install {{ cert.domain }} CSR
+      copy:
+        content: "{{ cert.csr }}"
+        dest:    "{{ __ssl_manual_csr }}"
+      when: cert.csr is defined
+
+    - name: Install {{ cert.domain }} chain
+      copy:
+        content: "{{ cert.chain }}"
+        dest:    "{{ __ssl_manual_chain }}"
+      when: cert.chain is defined
+
+    - name: Install {{ cert.domain }} full chain
+      copy:
+        content: "{{ cert.certificate }}{{ cert.chain | default('') }}"
+        dest:    "{{ __ssl_manual_fullchain }}"

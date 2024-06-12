@@ -1,0 +1,28 @@
+---
+- tags: nginx
+  block:
+    - name: "{{ site.domain }} : Create Basic Auth directory"
+      file:
+        path:  "{{ nginx_basic_auth_path }}/{{ site.domain }}"
+        state: directory
+        owner: root
+        group: www-data
+        mode:  "0750"
+
+    - name: "{{ site.domain }} : Install Basic Auth conf file"
+      template:
+        src:   conf.d/auth/basic-auth.conf.j2
+        dest:  "{{ nginx_basic_auth_path }}/{{ site.domain }}/auth.conf"
+        owner: root
+        group: www-data
+        mode:  "0640"
+
+    - name: "{{ site.domain }} : Install Basic Auth password"
+      htpasswd:
+        path:     "{{ nginx_basic_auth_path }}/{{ site.domain }}/htpasswd"
+        name:     "{{ site.auth.user }}"
+        password: "{{ site.auth.password }}"
+        owner:    root
+        group:    www-data
+        mode:     "0640"
+      notify: reload nginx

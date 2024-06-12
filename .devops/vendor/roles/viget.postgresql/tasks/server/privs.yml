@@ -1,0 +1,25 @@
+---
+- tags: postgresql
+  become: yes
+  become_user: "{{ postgresql_server_user }}"
+  block:
+    - name: "Set privileges for {{ priv.roles }} on {{ priv.database }}"
+      postgresql_privs:
+        database:          "{{ priv.database | default(omit) }}"
+        grant_option:      "{{ priv.grant_option | default(omit) }}"
+        host:              "{{ priv.host | default(omit) }}"
+        login:             "{{ priv.login | default(omit) }}"
+        login_host:        "{{ priv.login_host | default(omit) }}"
+        login_password:    "{{ priv.login_password | default(omit) }}"
+        login_unix_socket: "{{ priv.login_unix_socket | default(omit) }}"
+        login_user:        "{{ priv.login_user | default(omit) }}"
+        objs:              "{{ priv.objs | default(omit) }}"
+        password:          "{{ priv.password | default(omit) }}"
+        port:              "{{ priv.port | default(omit) }}"
+        privs:             "{{ priv.privs  | default(omit) }}"
+        roles:             "{{ priv.roles  | default(omit) }}"
+        schema:            "{{ priv.schema | default(omit) }}"
+        ssl_mode:          "{{ priv.ssl_mode | default(omit) }}"
+        ssl_rootcert:      "{{ priv.ssl_rootcert | default(omit) }}"
+        type:              "{{ priv.type | default(omit) }}"
+        unix_socket:       "{{ priv.unix_socket | default(omit) }}"

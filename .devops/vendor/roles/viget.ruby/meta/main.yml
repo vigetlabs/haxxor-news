@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  version: 2.0.0
+
+  min_ansible_version: 2.5.1
+
+  author:      viget
+  description: Install Ruby and Bundler
+  company:     Viget Labs
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - 16.04
+        - 18.04
+        - 20.04
+        - 22.04
+
+  galaxy_tags: []
+
+dependencies: []

@@ -1,0 +1,7 @@
+---
+- tags: ruby
+  block:
+    - name: Install Ruby dependencies
+      apt:
+        pkg:   "{{ ruby_dependencies }}"
+        state: present

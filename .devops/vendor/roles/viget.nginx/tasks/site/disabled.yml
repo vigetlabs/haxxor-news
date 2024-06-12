@@ -1,0 +1,8 @@
+---
+- tags: nginx
+  block:
+    - name: "{{ site.domain }} : Disable site"
+      file:
+        state: absent
+        path:  "{{ __nginx_site_enabled_path }}"
+      notify: reload nginx

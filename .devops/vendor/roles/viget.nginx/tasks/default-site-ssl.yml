@@ -1,0 +1,43 @@
+- tags: nginx
+  block:
+    - set_fact:
+        __nginx_ssl_path: /etc/ssl/nginx-default/selfsigned
+
+    - set_fact:
+        __nginx_ssl_private_key: "{{ __nginx_ssl_path }}/privkey.pem"
+        __nginx_ssl_public_key:  "{{ __nginx_ssl_path }}/pubkey.pem"
+        __nginx_ssl_csr:         "{{ __nginx_ssl_path }}/csr.pem"
+        __nginx_ssl_certificate: "{{ __nginx_ssl_path }}/cert.pem"
+
+    - name: Create default site SSL directories
+      file:
+        path: "{{ __nginx_ssl_path }}"
+        state: directory
+
+    - name: Create default site private key
+      openssl_privatekey:
+        path: "{{ __nginx_ssl_private_key }}"
+        size: 4096
+      notify: reload nginx
+
+    - name: Create default site public key
+      openssl_publickey:
+        path:            "{{ __nginx_ssl_public_key }}"
+        privatekey_path: "{{ __nginx_ssl_private_key }}"
+      notify: reload nginx
+
+    - name: Create default site CSR
+      openssl_csr:
+        path:             "{{ __nginx_ssl_csr }}"
+        privatekey_path:  "{{ __nginx_ssl_private_key }}"
+        common_name:      "*"
+      notify: reload nginx
+
+    - name: Create default site certificate
+      openssl_certificate:
+        provider:             selfsigned
+        path:                 "{{ __nginx_ssl_certificate }}"
+        csr_path:             "{{ __nginx_ssl_csr }}"
+        privatekey_path:      "{{ __nginx_ssl_private_key }}"
+        selfsigned_not_after: "20991231000000Z"
+      notify: reload nginx

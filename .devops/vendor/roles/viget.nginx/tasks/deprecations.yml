@@ -1,0 +1,37 @@
+---
+- tags: nginx
+  block:
+    - name: Check for deprecated {{ item.old }} variable
+      fail:
+        msg: "'{{ item.old }}' is no longer supported. Update config to '{{ item.new }}'"
+      when: vars[item.old] is defined
+      with_items:
+        - old: nginx_sites_available
+          new: nginx_sites
+
+        - old: nginx_sites_enabled
+          new: nginx_sites
+
+        - old: nginx_use_hsts
+          new: nginx_hsts
+
+        - old: nginx_basic_auth
+          new: site.auth
+
+        - old: nginx_basic_auth_user
+          new: site.auth.user
+
+        - old: nginx_basic_auth_password
+          new: site.auth.password
+
+    - become: no
+      block:
+        - name: Check for deprecated "sites-available" local templates directory
+          local_action:
+            module: stat
+            path:   "{{ __nginx_local_templates_dir }}/sites-available"
+          register: __nginx_stat
+
+        - fail:
+            msg: "Local template directory '{{ __nginx_local_templates_dir }}/sites-available' is no longer supported. Move template files to '{{ __nginx_local_templates_dir }}/sites' and remove 'sites-available' directory"
+          when: __nginx_stat.stat.exists and __nginx_stat.stat.isdir

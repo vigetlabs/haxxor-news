@@ -1,0 +1,64 @@
+---
+- tags: rails
+  block:
+    - set_fact:
+        __rails_app_name:         "{{ app.name }}"
+        __rails_app_environment:  "{{ app.environment }}"
+        __rails_app_owner:        "{{ app.owner | default(rails_app_owner) }}"
+        __rails_app_group:        "{{ app.group | default(rails_app_group) }}"
+        __rails_app_mode:         "{{ app.mode | default(rails_app_mode) }}"
+        __rails_app_config_files: "{{ app.config_files | default([]) }}"
+
+    - set_fact:
+        __rails_app_path: "{{ app.path | default('/var/www/' + __rails_app_name + '/' + __rails_app_environment) }}"
+
+    - set_fact:
+        __rails_app_shared_path: "{{ __rails_app_path }}/shared"
+
+    - fail:
+        msg: "rails_apps[].path must be defined"
+      when: __rails_app_path is undefined or __rails_app_path == ""
+
+    - name: Create app root
+      file:
+        state: directory
+        path:  "{{ __rails_app_path }}"
+        owner: "{{ __rails_app_owner }}"
+        group: "{{ __rails_app_group }}"
+        mode:  "{{ __rails_app_mode }}"
+
+    - name: Create app directories
+      file:
+        state: directory
+        path:  "{{ __rails_app_path }}/{{ item }}"
+        owner: "{{ __rails_app_owner }}"
+        group: "{{ __rails_app_group }}"
+        mode:  "{{ __rails_app_mode }}"
+      with_items:
+        - releases
+        - shared
+        - shared/config
+        - shared/log
+        - shared/node_modules
+
+    - name: Install app config files
+      template:
+        src:   "{{ config.src }}"
+        dest:  "{{ __rails_app_path }}/{{ config.dest }}"
+        owner: "{{ ansible_user }}"
+        group: "{{ __rails_app_group }}"
+        mode:  "640"
+      with_items: "{{ __rails_app_config_files }}"
+      loop_control:
+        loop_var: config
+
+    - set_fact:
+        __rails_app_rotate_logs:    "{{ app.rotate_logs | default(True) }}"
+        __rails_app_logrotate_name: "{{ __rails_app_name }}-{{ __rails_app_environment }}"
+
+    - name: Install logrotate script
+      template:
+        src:  logrotate.conf.j2
+        dest: "/etc/logrotate.d/{{ __rails_app_logrotate_name }}"
+        mode: "0644"
+      when: __rails_app_rotate_logs

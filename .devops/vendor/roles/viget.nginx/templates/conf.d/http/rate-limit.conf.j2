@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+
+server_names_hash_bucket_size 64;
+server_names_hash_max_size    4096;
+
+limit_req_zone ${{ nginx_rate_limit_key }} zone=flood:50m rate=90r/s;
+limit_req      zone=flood burst=200 nodelay;
+
+limit_conn_zone ${{ nginx_rate_limit_key }} zone=addr:50m;
+limit_conn      addr 200;

@@ -1,0 +1,117 @@
+---
+- tags: nginx
+  block:
+    # Web root
+    - name: Set permissions on web root
+      file:
+        state: directory
+        path:  "{{ nginx_web_root }}"
+        owner: "{{ nginx_web_root_owner }}"
+        group: "{{ nginx_web_root_group }}"
+        mode:  "{{ nginx_web_root_mode }}"
+
+    # Security
+    - name: Create DH parameters file
+      command: openssl dhparam -dsaparam -out {{ nginx_dhparam_path }} 4096
+      args:
+        creates: "{{ nginx_dhparam_path }}"
+
+    - name: Ensure nginx runs on boot
+      service:
+        name:    nginx
+        enabled: yes
+
+    # MIME types
+    - name: Install mime.types file
+      template:
+        src:  "mime.types.j2"
+        dest: "{{ nginx_config_path }}/mime.types"
+      notify: reload nginx
+
+    # conf.d
+    - name: Create conf.d directories
+      file:
+        path:  "{{ nginx_confd_path }}/{{ item }}"
+        state: directory
+      with_items:
+        - auth
+        - http
+        - server
+
+    # conf.d/http
+    - name: Install conf.d/http files
+      template:
+        src:  "conf.d/http/{{ item }}.conf.j2"
+        dest: "{{ nginx_confd_path }}/http/{{ item }}.conf"
+      with_items:
+        - rate-limit
+        - gzip
+        - security
+        - stub_status
+      notify: reload nginx
+
+    - name: Remove outdated conf.d/http files
+      file:
+        path:  "{{ nginx_confd_path }}/http/{{ item }}.conf"
+        state: absent
+      with_items:
+        - basic-auth
+        - ddos-filter
+        - ddos-limit
+        - ssl
+      notify: reload nginx
+
+    # conf.d/server
+    - name: Install conf.d/server files
+      template:
+        src:  "conf.d/server/{{ item }}.conf.j2"
+        dest: "{{ nginx_confd_path }}/server/{{ item }}.conf"
+      with_items:
+        - canonical-redirect
+        - cleaner-logs
+        - font-cors
+        - maintenance
+        - no-robots
+        - security
+        - ssl
+        - xss-protection
+      notify: reload nginx
+
+    - name: Remove outdated conf.d/server files
+      file:
+        path:  "{{ nginx_confd_path }}/server/{{ item }}.conf"
+        state: absent
+      with_items:
+        - norobots
+        - stub_status
+      notify: reload nginx
+
+    # nginx.conf
+    - name: Install conf.d/nginx-local.conf config file
+      template:
+        src:  "{{ __nginx_local_templates_dir }}/nginx-local.conf.j2"
+        dest: "{{ nginx_confd_path }}/nginx-local.conf"
+        mode: "0644"
+      notify: reload nginx
+
+    - name: Install nginx.conf config file
+      template:
+        src:  "nginx.conf.j2"
+        dest: "{{ nginx_config_path }}/nginx.conf"
+        mode: "0644"
+      notify: reload nginx
+
+    # Extra conf.d files
+    - name: Install extra conf.d files
+      template:
+        src:  "{{ __nginx_local_templates_dir }}/conf.d/{{ item.src }}"
+        dest: "{{ nginx_confd_path }}/{{ item.dest }}"
+        mode: "0644"
+      notify: reload nginx
+      with_items: "{{ nginx_extra_confd_files }}"
+
+    # Basic Auth
+    - name: Install passlib Python library
+      apt:
+        pkg:   python3-passlib
+        state: present

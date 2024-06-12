@@ -1,0 +1,27 @@
+---
+- tags: postgresql
+  block:
+    - name: Check for postgresql_role variable
+      fail:
+        msg: "postgresql_role variable must be one of ['client', 'server']"
+      when: postgresql_role is undefined or (postgresql_role not in ['client', 'server'])
+
+    - name: Check for postgresql_version variable
+      fail:
+        msg: "postgresql_version variable must be one of [9.5, 9.6, 10, 11, 12, 13], 14"
+      when: postgresql_version is undefined or (postgresql_version not in [9.5, 9.6, 10, 11, 12, 13, 14])
+
+    - include_vars:
+        file: "{{ postgresql_version }}.yml"
+
+    - name: Add postpresql apt key
+      apt_key:
+        url:   https://www.postgresql.org/media/keys/ACCC4CF8.asc
+        state: present
+
+    - name: Add postgresql apt repo
+      apt_repository:
+        repo: "deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main"
+        update_cache: yes
+
+    - include_tasks: "{{ postgresql_role }}/main.yml"

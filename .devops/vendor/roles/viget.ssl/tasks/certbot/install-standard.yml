@@ -1,0 +1,14 @@
+---
+- tags: ssl
+  block:
+    - when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version | int < 20
+      block:
+        - name: Add certbot apt repository
+          apt_repository:
+            repo:         "ppa:certbot/certbot"
+            update_cache: yes
+
+    - name: Install certbot
+      package:
+        name:  certbot
+        state: present

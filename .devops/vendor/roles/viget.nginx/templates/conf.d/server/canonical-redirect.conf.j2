@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+
+if ($host != $server_name) {
+  return 301 https://$server_name$request_uri;
+}

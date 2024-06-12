@@ -1,0 +1,18 @@
+---
+- tags: deploy
+  block:
+    - name: Generate SSH key
+      shell: ssh-keygen -b 4096 -t rsa -f {{ deploy_user_home }}/.ssh/id_rsa -q -N ""
+      args:
+        creates: "{{ deploy_user_home }}/.ssh/id_rsa"
+
+    - name: Set permissions on SSH key
+      file:
+        state: file
+        path:  "{{ deploy_user_home }}/.ssh/{{ item }}"
+        owner: "{{ deploy_user }}"
+        group: "{{ deploy_user }}"
+        mode:  "0600"
+      with_items:
+        - id_rsa
+        - id_rsa.pub

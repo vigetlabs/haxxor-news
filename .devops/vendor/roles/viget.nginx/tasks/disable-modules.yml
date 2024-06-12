@@ -1,0 +1,8 @@
+- tags: nginx
+  block:
+    - name: Disable modules
+      file:
+        state: absent
+        path:  "{{ nginx_config_path }}/modules-enabled/50-mod-http-{{ item }}.conf"
+      notify: restart nginx
+      with_items: "{{ nginx_disabled_modules }}"

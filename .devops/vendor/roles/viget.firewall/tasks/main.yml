@@ -1,0 +1,41 @@
+---
+- tags: firewall
+  block:
+    - name: Install ufw
+      apt:
+        name:  ufw
+        state: present
+
+    - name: Enable ufw
+      ufw:
+        state: enabled
+
+    - name: Allow SSH port
+      ufw:
+        rule:      allow
+        direction: in
+        port:      "{{ firewall_ssh_port | string }}"
+        proto:     tcp
+
+    - name: Deny all incoming traffic by default
+      ufw:
+        direction: incoming
+        policy:    deny
+
+    - name: Allow all outgoing traffic by default
+      ufw:
+        direction: outgoing
+        policy:    allow
+
+    - name: Set ufw rules
+      ufw:
+        rule:      "{{ item.rule      | default('allow') }}"
+        name:      "{{ item.name      | default(omit) }}"
+        direction: "{{ item.direction | default('in') }}"
+        interface: "{{ item.interface | default(omit) }}"
+        proto:     "{{ item.proto     | default('tcp') }}"
+        to:        "{{ item.to        | default(omit) }}"
+        from:      "{{ item.from      | default(omit) }}"
+        delete:    "{{ item.delete    | default(omit) }}"
+        port:      "{{ item.port }}"
+      with_items: "{{ firewall_rules }}"

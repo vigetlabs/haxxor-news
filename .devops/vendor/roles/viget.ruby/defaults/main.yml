@@ -1,0 +1,6 @@
+---
+ruby_build_version: v20221206
+ruby_build_source:  https://github.com/rbenv/ruby-build.git
+
+ruby_version:
+ruby_bundler_version:

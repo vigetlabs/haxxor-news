@@ -1,0 +1,18 @@
+---
+- tags: deploy
+  block:
+    - name: Ensure deploy user exists
+      user:
+        name:       "{{ deploy_user }}"
+        home:       "{{ deploy_user_home }}"
+        groups:     "{{ deploy_user_groups }}"
+        append:     yes
+        shell:      /bin/bash
+        createhome: yes
+        state:      present
+
+    - name: Create .ssh directory
+      file:
+        state: directory
+        path:  "{{ deploy_user_home }}/.ssh"
+        mode:  0700

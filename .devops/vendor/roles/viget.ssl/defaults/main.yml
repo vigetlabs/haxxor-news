@@ -1,0 +1,12 @@
+---
+ssl_certificates: []
+
+ssl_certbot_root: /etc/letsencrypt
+ssl_root:         /etc/ssl
+
+ssl_certbot_renewal_hook: nginx
+
+ssl_certbot_renewal_hook_nginx: systemctl reload nginx
+
+ssl_install_certbot: true
+ssl_install_legacy:  false

@@ -3,6 +3,9 @@
 # Ignore git directory.
 /.git/
 
+# Ignore devops directory.
+/.devops
+
 # Ignore bundler config.
 /.bundle
 

@@ -1,0 +1,8 @@
+---
+node_version: 12.16.0
+
+node_build_version: v4.7.2
+node_build_source:  https://github.com/nodenv/node-build.git
+
+node_install_yarn: true
+node_yarn_version: 1.21.1

@@ -1,0 +1,31 @@
+---
+- tags: base
+  block:
+    - include_tasks: ssh.yml
+      when: base_secure_ssh
+
+    - include_tasks: hostname.yml
+      when: base_hostname != False and base_hostname != ""
+
+    - include_tasks: unattended-upgrades.yml
+      when: base_autoupdate_enabled
+
+    - include_tasks: fail2ban.yml
+      when: base_fail2ban_enabled
+
+    - include_tasks: locale.yml
+
+    - include_tasks: timedatectl.yml
+      when: base_timedatectl_enabled
+
+    - include_tasks: ntp.yml
+      when: base_ntp_enabled
+
+    - include_tasks: swap.yml
+      when: base_swapfile_enabled and base_swapfile_size != False
+
+    - include_tasks: tools.yml
+
+    - include_tasks: python.yml
+
+    - include_tasks: vim.yml

@@ -1,0 +1,8 @@
+---
+- tags: deploy
+  block:
+    - name: Fetch deploy user's SSH key
+      fetch:
+        src:  "{{ deploy_user_home }}/.ssh/id_rsa.pub"
+        dest: "{{ deploy_user_fetch_ssh_key_path }}"
+        flat: yes

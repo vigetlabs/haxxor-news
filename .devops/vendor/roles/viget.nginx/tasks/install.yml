@@ -1,0 +1,8 @@
+---
+- tags: nginx
+  block:
+    - include_tasks: install-passenger.yml
+      when: nginx_passenger == True
+
+    - include_tasks: install-standard.yml
+      when: nginx_passenger != True

@@ -1,0 +1,12 @@
+<% if __nginx_site_ssl == 'selfsigned' -%>
+  ssl_certificate         /etc/ssl/{{ site.domain }}/selfsigned/cert.pem;
+  ssl_certificate_key     /etc/ssl/{{ site.domain }}/selfsigned/privkey.pem;
+<% elif __nginx_site_ssl == 'certbot' -%>
+  ssl_certificate         /etc/ssl/{{ site.domain }}/certbot/fullchain.pem;
+  ssl_certificate_key     /etc/ssl/{{ site.domain }}/certbot/privkey.pem;
+  ssl_trusted_certificate /etc/ssl/{{ site.domain }}/certbot/chain.pem;
+<% elif __nginx_site_ssl == 'manual' -%>
+  ssl_certificate         /etc/ssl/{{ site.domain }}/manual/fullchain.pem;
+  ssl_certificate_key     /etc/ssl/{{ site.domain }}/manual/privkey.pem;
+  ssl_trusted_certificate /etc/ssl/{{ site.domain }}/manual/chain.pem;
+<% endif %>

@@ -1,0 +1,19 @@
+---
+- hosts: all
+
+  become: true
+  become_user: root
+
+  vars:
+    yarn_key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+
+  tasks:
+    - name: Remove Yarn apt key
+      apt_key:
+        url:   "{{ yarn_key_url }}"
+        state: absent
+
+    - name: Add Yarn apt key
+      apt_key:
+        url:   "{{ yarn_key_url }}"
+        state: present

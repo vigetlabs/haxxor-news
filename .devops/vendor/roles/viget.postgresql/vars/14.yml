@@ -1,0 +1,9 @@
+---
+postgresql_client_dependencies:
+  - postgresql-client-14
+  - libpq-dev
+
+postgresql_server_dependencies:
+  - postgresql-14
+  - postgresql-server-dev-14
+  - libpq-dev

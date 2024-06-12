@@ -1,0 +1,22 @@
+---
+- tags: postgresql
+  block:
+    - include_tasks: install.yml
+    - include_tasks: configure.yml
+
+    - include_tasks: users.yml
+      with_items: "{{ postgresql_users }}"
+      loop_control:
+        loop_var: user
+
+    - include_tasks: databases.yml
+      with_items: "{{ postgresql_databases }}"
+      loop_control:
+        loop_var: db
+
+    - include_tasks: privs.yml
+      with_items: "{{ postgresql_privs }}"
+      loop_control:
+        loop_var: priv
+
+    - include_tasks: secure.yml

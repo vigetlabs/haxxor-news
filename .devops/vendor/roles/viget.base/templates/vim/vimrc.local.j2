@@ -1,0 +1,58 @@
+" {{ ansible_managed }}
+" vim: ft=vim
+
+filetype plugin indent on
+syntax on
+
+runtime macros/matchit.vim
+
+highlight CursorLineNR ctermfg=cyan
+
+set cursorline
+set encoding=utf-8
+set hidden
+set hlsearch
+set incsearch
+set laststatus=2
+set listchars=tab:▸\ ,eol:¬
+set number
+set scrolloff=3
+set showcmd
+set showmode
+set wildmode=list:longest
+
+" Whitespace settings
+set autoindent
+set expandtab
+set shiftwidth=2
+set smarttab
+set softtabstop=2
+set tabstop=2
+
+" Shortcuts
+let mapleader = " "
+let maplocalleader = ","
+
+nnoremap <leader>i :set list!<CR>
+nnoremap <leader>g :e %:.:h/
+nnoremap <leader>c :saveas %:p:h/
+
+" Faster scrolling
+nnoremap <C-e> 4<C-e>
+nnoremap <C-y> 4<C-y>
+
+" Faster search and replace
+noremap <leader>s :%s//g<LEFT><LEFT>
+
+" Center search results
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap * *zz
+nnoremap # #zz
+
+" Scroll through command history
+cnoremap <c-n> <down>
+cnoremap <c-p> <up>
+
+" Clear search results
+nnoremap <c-l> :noh<CR>

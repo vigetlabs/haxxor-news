@@ -1,0 +1,18 @@
+---
+- tags: nginx
+  block:
+    - name: "{{ site.domain | default(site.name) }} : Disable site and remove site config files"
+      file:
+        state: absent
+        path:  "{{ item }}"
+      with_items:
+        - "{{ __nginx_site_available_path }}"
+        - "{{ __nginx_site_enabled_path }}"
+      notify: reload nginx
+
+    - when: site.domain is defined
+      block:
+        - name: "{{ site.domain | default(site.name) }} : Remove basic auth files"
+          file:
+            state: absent
+            path: "{{ nginx_basic_auth_path }}/{{ site.domain }}"

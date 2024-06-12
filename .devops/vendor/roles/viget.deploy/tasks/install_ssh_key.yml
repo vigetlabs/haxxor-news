@@ -1,0 +1,16 @@
+---
+- tags: deploy
+  block:
+    - name: Install SSH key
+      copy:
+        content: "{{ item.content }}"
+        dest:    "{{ deploy_user_home }}/.ssh/{{ item.file }}"
+        owner:   "{{ deploy_user }}"
+        group:   "{{ deploy_user }}"
+        mode:    "0600"
+      no_log: yes
+      with_items:
+        - content: "{{ deploy_user_ssh_public_key }}"
+          file:    id_rsa.pub
+        - content: "{{ deploy_user_ssh_private_key }}"
+          file:    id_rsa

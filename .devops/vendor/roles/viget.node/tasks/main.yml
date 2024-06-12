@@ -1,0 +1,7 @@
+---
+- tags: node
+  block:
+    - include_tasks: node.yml
+
+    - include_tasks: yarn.yml
+      when: node_install_yarn

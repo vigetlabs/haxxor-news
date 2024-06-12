@@ -1,0 +1,39 @@
+---
+- tags: ssl
+  block:
+    - name: Install DNSimple Certbot plugin
+      apt:
+        name:  python3-certbot-dns-dnsimple
+        state: present
+
+    - name: Create /root/.dnsimple credentials directory
+      file:
+        path:  /root/.dnsimple
+        state: directory
+        owner: root
+        group: root
+        mode:  0700
+
+    - name: Install DNSimple credentials file
+      template:
+        src:   certbot/dnsimple/credentials.j2
+        dest:  /root/.dnsimple/credentials
+        owner: root
+        group: root
+        mode:  0600
+      vars:
+        credentials: "{{ cert.credentials }}"
+
+    - name: Acquire {{ cert.domain }} certificate via DNSimple
+      shell: |
+        certbot certonly \
+          --agree-tos \
+          --email {{ cert.email }} \
+          --dns-dnsimple \
+          --dns-dnsimple-credentials /root/.dnsimple/credentials \
+          --rsa-key-size 4096 \
+          {{ __ssl_certbot_staging | ternary('--staging', '') }} \
+          {{ __ssl_certbot_options | join(' ') }}
+      args:
+        executable: /bin/bash
+        creates:    "{{ ssl_certbot_root }}/live/{{ cert.domain }}/privkey.pem"

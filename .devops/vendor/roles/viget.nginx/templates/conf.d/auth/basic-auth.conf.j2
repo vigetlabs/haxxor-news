@@ -1,0 +1,4 @@
+# {{ ansible_managed }}
+
+auth_basic           "{{ site.auth.realm | default('Restricted') }}";
+auth_basic_user_file {{ nginx_basic_auth_path }}/{{ site.domain }}/htpasswd;

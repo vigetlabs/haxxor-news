@@ -1,0 +1,21 @@
+---
+- tags: imagemagick
+  block:
+    - name: Install ImageMagick
+      apt:
+        pkg:   imagemagick
+        state: present
+
+    - name: Create config path
+      file:
+        path:  "{{ imagemagick_conf_path }}"
+        state: directory
+        owner: root
+        group: root
+        mode:  "0755"
+
+    - name: Secure ImageMagick
+      template:
+        src:  policy.xml.j2
+        dest: "{{ imagemagick_conf_path }}/policy.xml"
+        mode: "0644"

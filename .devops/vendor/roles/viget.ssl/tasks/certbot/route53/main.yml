@@ -1,0 +1,38 @@
+---
+- tags: ssl
+  block:
+    - name: Install Route 53 Certbot plugin
+      apt:
+        name:  python3-certbot-dns-route53
+        state: present
+
+    - name: Create /root/.aws credentials directory
+      file:
+        path:  /root/.aws
+        state: directory
+        owner: root
+        group: root
+        mode:  0700
+
+    - name: Install AWS credentials file
+      template:
+        src:   certbot/route53/credentials.j2
+        dest:  /root/.aws/credentials
+        owner: root
+        group: root
+        mode:  0600
+      vars:
+        credentials: "{{ cert.credentials }}"
+
+    - name: Acquire {{ cert.domain }} certificate via Route 53 DNS
+      shell: |
+        certbot certonly \
+          --agree-tos \
+          --email {{ cert.email }} \
+          --dns-route53 \
+          --rsa-key-size 4096 \
+          {{ __ssl_certbot_staging | ternary('--staging', '') }} \
+          {{ __ssl_certbot_options | join(' ') }}
+      args:
+        executable: /bin/bash
+        creates:    "{{ ssl_certbot_root }}/live/{{ cert.domain }}/privkey.pem"

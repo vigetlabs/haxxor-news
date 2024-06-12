@@ -1,0 +1,18 @@
+---
+- tags: base
+  block:
+    - name: "unattended-upgrades : Install unattended-upgrades"
+      apt:
+        pkg:   unattended-upgrades
+        state: present
+
+    - name: "unattended-upgrades : Configure unattended-upgrades"
+      template:
+        src:   "unattended-upgrades/{{ item }}.j2"
+        dest:  "/etc/apt/apt.conf.d/{{ item }}"
+        owner: root
+        group: root
+        mode:  0644
+      with_items:
+        - 10periodic
+        - 50unattended-upgrades

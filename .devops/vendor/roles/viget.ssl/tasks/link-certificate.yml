@@ -1,0 +1,22 @@
+---
+- tags: ssl
+  block:
+    - set_fact:
+        __ssl_link_files:
+          - cert.pem
+          - chain.pem
+          - fullchain.pem
+          - privkey.pem
+
+    - name: Unlink unused {{ domain }} files
+      file:
+        state: absent
+        path: "{{ ssl_root }}/{{ domain }}/live/{{ item }}"
+      with_items: "{{ __ssl_link_files | difference(files) }}"
+
+    - name: Link {{ domain }} files to live directory
+      file:
+        state: link
+        src:   "{{ root }}/{{ item }}"
+        dest:  "{{ ssl_root }}/{{ domain }}/live/{{ item }}"
+      with_items: "{{ files }}"

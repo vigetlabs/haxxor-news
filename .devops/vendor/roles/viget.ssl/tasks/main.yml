@@ -1,0 +1,16 @@
+---
+- tags: ssl
+  block:
+    - set_fact:
+        __ssl_certs_certbot: "{{ ssl_certificates | selectattr('type', 'equalto', 'certbot') | list }}"
+        __ssl_certs_self:    "{{ ssl_certificates | selectattr('type', 'equalto', 'selfsigned') | list }}"
+        __ssl_certs_manual:  "{{ ssl_certificates | selectattr('type', 'equalto', 'manual') | list }}"
+
+    - include_tasks: certbot/main.yml
+      when: __ssl_certs_certbot | length > 0
+
+    - include_tasks: selfsigned/main.yml
+      when: __ssl_certs_self | length > 0
+
+    - include_tasks: manual/main.yml
+      when: __ssl_certs_manual | length > 0

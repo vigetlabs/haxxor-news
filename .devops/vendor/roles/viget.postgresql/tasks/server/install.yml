@@ -1,0 +1,21 @@
+---
+- tags: postgresql
+  block:
+    - name: Install acl
+      apt:
+        pkg: acl
+
+    - name: Install PostgreSQL server dependencies
+      apt:
+        pkg: "{{ postgresql_server_dependencies }}"
+
+    - name: Install PostgreSQL Python library
+      apt:
+        name:  python3-psycopg2
+        state: present
+
+    - name: Ensure PostgreSQL runs at startup
+      service:
+        name:    postgresql
+        state:   started
+        enabled: yes

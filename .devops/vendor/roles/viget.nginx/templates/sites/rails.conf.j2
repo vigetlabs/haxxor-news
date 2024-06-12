@@ -1,0 +1,9 @@
+<% extends "master.conf.j2" %>
+
+<% block config -%>
+  index index.html;
+
+  passenger_enabled on;
+  passenger_ruby    /usr/local/bin/ruby;
+  passenger_app_env {{ site.environment }};
+<% endblock %>

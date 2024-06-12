@@ -1,0 +1,36 @@
+---
+- tags: nginx
+  block:
+    - name: Remove ppa:nginx/stable repo
+      apt_repository:
+        repo:  ppa:nginx/stable
+        state: absent
+
+    - name: Remove ppa:nginx/development repo
+      apt_repository:
+        repo:  ppa:nginx/development
+        state: absent
+
+    - when: ansible_distribution_major_version | int < 20
+      block:
+        - name: Add ppa:nginx/mainline repo
+          apt_repository:
+            repo:         ppa:nginx/mainline
+            update_cache: true
+
+    - when: ansible_distribution_major_version | int == 20
+      block:
+        - name: Remove ppa:nginx/mainline repo
+          apt_repository:
+            repo:  ppa:nginx/mainline
+            state: absent
+
+        - name: Add ppa:ondrej/nginx repo
+          apt_repository:
+            repo:         ppa:ondrej/nginx
+            update_cache: true
+
+    - name: Install nginx
+      apt:
+        pkg:   nginx
+        state: present

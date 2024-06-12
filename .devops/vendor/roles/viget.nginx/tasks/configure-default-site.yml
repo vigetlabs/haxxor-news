@@ -1,0 +1,48 @@
+- tags: nginx
+  block:
+    # Old default site
+    - name: Remove default site config
+      file:
+        state: absent
+        path:  "{{nginx_config_path }}/{{ item }}/default"
+      with_items:
+        - sites-enabled
+        - sites-available
+      notify: reload nginx
+
+    - name: Remove default site from web root
+      file:
+        state: absent
+        path:  "{{ nginx_web_root }}/html"
+
+    # Create default site key pair
+    - include_tasks: default-site-ssl.yml
+      tags: nginx
+
+    - when: nginx_default_site == True
+      block:
+      # Install new default site
+      - name: Install default site config
+        template:
+          src:  sites/_.conf.j2
+          dest: "{{ nginx_config_path }}/sites-available/_.conf"
+        notify: reload nginx
+
+      - name: Enable default site
+        file:
+          state: link
+          src:   "{{ nginx_config_path }}/sites-available/_.conf"
+          dest:  "{{ nginx_config_path }}/sites-enabled/_.conf"
+        notify: reload nginx
+
+    - when: nginx_default_site == False
+      block:
+      # Install new default site
+      - name: Remove and disable default site
+        file:
+          state: absent
+          path:  "{{ nginx_config_path }}/{{ item }}"
+        with_items:
+          - sites-available/_.conf
+          - sites-enabled/_.conf
+        notify: reload nginx

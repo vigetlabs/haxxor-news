@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  version: 3.7.3
+
+  min_ansible_version: 2.5.1
+
+  author:      viget
+  description: Base server configuration - locale, unattended upgrades, fail2ban, ssh, software
+  company:     Viget Labs
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - 16.04
+        - 18.04
+        - 20.04
+        - 22.04
+
+  galaxy_tags: []
+
+dependencies: []

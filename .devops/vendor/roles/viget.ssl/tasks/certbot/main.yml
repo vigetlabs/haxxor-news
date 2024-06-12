@@ -1,0 +1,57 @@
+---
+- tags: ssl
+  block:
+    - when: ansible_distribution == 'Ubuntu'
+      block:
+        - name: Install Let's Encrypt dependencies
+          apt:
+            pkg:   software-properties-common
+            state: present
+
+    - include_tasks: install-standard.yml
+      when: ssl_install_certbot == True and ssl_install_legacy == False
+
+    - include_tasks: install-legacy.yml
+      when: ssl_install_certbot == True and ssl_install_legacy == True
+
+    - name: Create webroots directory
+      file:
+        path:  "{{ ssl_certbot_root }}/webroots"
+        state: directory
+
+    - name: Set permissions on archive & live directories
+      file:
+        path:  "{{ ssl_certbot_root }}/{{ item }}"
+        state: directory
+        mode:  "0755"
+      with_items:
+        - archive
+        - live
+
+    - name: Create renewal hooks directory
+      file:
+        path:  "{{ ssl_certbot_root }}/{{ item }}"
+        state: directory
+        mode:  "0755"
+      with_items:
+        - renewal-hooks
+        - renewal-hooks/deploy
+
+    - name: Install renewal hook to reload nginx
+      template:
+        src:  certbot/hooks/reload_nginx.j2
+        dest: "{{ ssl_certbot_root }}/renewal-hooks/deploy/reload_nginx"
+        mode: "0744"
+      when: ssl_certbot_renewal_hook == 'nginx'
+
+    - name: Install renewal hook to reload Apache
+      template:
+        src:  certbot/hooks/reload_apache.j2
+        dest: "{{ ssl_certbot_root }}/renewal-hooks/deploy/reload_apache"
+        mode: "0744"
+      when: ssl_certbot_renewal_hook == 'apache'
+
+    - include_tasks: certificate.yml
+      with_items: "{{ __ssl_certs_certbot }}"
+      loop_control:
+        loop_var: cert

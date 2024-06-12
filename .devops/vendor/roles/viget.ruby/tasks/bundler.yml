@@ -1,0 +1,19 @@
+---
+- tags: ruby
+  block:
+    - name: Check for Bundler
+      shell: >
+        gem list -i -v {{ ruby_bundler_version }} bundler
+      args:
+        executable: /bin/bash
+      register: __ruby_bundler_installed
+      failed_when: no
+      changed_when: no
+      check_mode: no
+
+    - name: Install Bundler
+      shell: >
+        gem install -v {{ ruby_bundler_version }} bundler
+      args:
+        executable: /bin/bash
+      when: __ruby_bundler_installed.rc == 1

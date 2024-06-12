@@ -1,0 +1,9 @@
+---
+- tags: nginx
+  block:
+    - name: "{{ site.domain }} : Enable site"
+      file:
+        state: link
+        src:   "{{ __nginx_site_available_path }}"
+        dest:  "{{ __nginx_site_enabled_path }}"
+      notify: reload nginx

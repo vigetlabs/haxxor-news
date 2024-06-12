@@ -1,0 +1,44 @@
+---
+- tags: node
+  block:
+    - name: Check if Node installed
+      shell: >
+        node --version | grep "{{ node_version }}"
+      args:
+        executable: /bin/bash
+      register: __node_installed
+      failed_when: no
+      changed_when: no
+      check_mode: no
+
+    - set_fact:
+        __node_installed: "{{ __node_installed.rc == 0 }}"
+
+    - when: not __node_installed
+      block:
+        - name: Create temporary directory
+          tempfile:
+            state: directory
+            suffix: node-build
+          register: __node_build_tmp_path
+
+        - set_fact:
+            __node_build_tmp_path: __node_build_tmp_path.path
+
+        - name: Clone node-build repo
+          git:
+            repo:    "{{ node_build_source }}"
+            dest:    "{{ __node_build_tmp_path }}"
+            version: "{{ node_build_version }}"
+
+        - name: Install Node {{ node_version }}
+          shell: >
+            cd {{ __node_build_tmp_path }} \
+            && bin/node-build -v {{ node_version }} /usr/local
+          args:
+            executable: /bin/bash
+
+        - name: Remove node-build tmp directory
+          file:
+            path: "{{ __node_build_tmp_path }}"
+            state: absent

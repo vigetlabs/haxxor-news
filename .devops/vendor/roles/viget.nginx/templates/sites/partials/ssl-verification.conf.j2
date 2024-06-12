@@ -1,0 +1,5 @@
+<% if __nginx_site_ssl == 'certbot' -%>
+  location /.well-known {
+    alias /etc/letsencrypt/webroots/{{ site.domain }}/.well-known;
+  }
+<% endif %>

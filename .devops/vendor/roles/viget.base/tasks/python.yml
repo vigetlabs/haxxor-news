@@ -1,0 +1,31 @@
+---
+- tags: base
+  block:
+    - set_fact:
+        __base_python_pip_package: python3-pip
+        __base_python_pip:         pip3
+      when: ansible_python_version is version('3.0.0', '>=')
+
+    - set_fact:
+        __base_python_pip_package: python-pip
+        __base_python_pip:         pip
+      when: ansible_python_version is version('3.0.0', '<')
+
+    - name: "tools : Install pip"
+      apt:
+        name:  "{{ __base_python_pip_package }}"
+        state: present
+
+    - name: "tools : Upgrade pip"
+      pip:
+        name:       pip
+        state:      present
+        version:    "{{ base_python_pip_version }}"
+        executable: "{{ __base_python_pip }}"
+      when: base_python_upgrade_pip == True
+
+    - name: "tools : Install PyOpenSSL library"
+      pip:
+        name:       pyOpenSSL
+        state:      present
+        executable: "{{ __base_python_pip }}"

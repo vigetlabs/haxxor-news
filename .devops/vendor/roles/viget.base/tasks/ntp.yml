@@ -1,0 +1,20 @@
+---
+- tags: base
+  block:
+    - name: "ntp : Install NTP packages"
+      apt:
+        pkg:
+          - ntp
+          - tzdata
+        state: present
+
+    - name: "ntp : Set NTP timezone"
+      timezone:
+        name: "{{ base_timezone }}"
+      notify: restart cron
+
+    - name: "ntp : Enable and start NTP"
+      service:
+        name:    ntp
+        state:   started
+        enabled: yes

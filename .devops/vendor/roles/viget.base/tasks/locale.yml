@@ -1,0 +1,13 @@
+---
+- tags: base
+  block:
+    - name: "locale : Set default system locale"
+      lineinfile:
+        path:   /etc/default/locale
+        create: yes
+        state:  present
+        regexp: "^{{ item }}="
+        line:   '{{ item }}="{{ base_locale }}"'
+      with_items:
+        - LANG
+        - LANGUAGE

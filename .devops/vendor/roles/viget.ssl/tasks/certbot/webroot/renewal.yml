@@ -1,0 +1,27 @@
+---
+- tags: ssl
+  block:
+    - name: Configure {{ domain }} renewal
+      vars:
+        domain:  "{{ cert.domain }}"
+        aliases: "{{ __ssl_certbot_aliases }}"
+      block:
+        - lineinfile:
+            path:   "{{ ssl_certbot_root }}/renewal/{{ domain }}.conf"
+            regexp: "^authenticator ="
+            line:   "authenticator = webroot"
+
+        - lineinfile:
+            path: "{{ ssl_certbot_root }}/renewal/{{ domain }}.conf"
+            line: "[[webroot_map]]"
+
+        - lineinfile:
+            path:   "{{ ssl_certbot_root }}/renewal/{{ domain }}.conf"
+            regexp: "^{{ domain }}"
+            line:   "{{ domain }} = {{ ssl_certbot_root }}/webroots/{{ domain }}"
+
+        - lineinfile:
+            path:   "{{ ssl_certbot_root }}/renewal/{{ domain }}.conf"
+            regexp: "^{{ item }}"
+            line:   "{{ item }} = {{ ssl_certbot_root }}/webroots/{{ domain }}"
+          with_items: "{{ aliases }}"

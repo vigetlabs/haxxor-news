@@ -1,0 +1,48 @@
+---
+ansible_host: 34.192.21.181
+ansible_user: ansible
+
+# firewall
+firewall_rules:
+  - port: 80
+  - port: 443
+
+# deploy
+deploy_user_authorized_keys:
+  - keys/users/deisinger.pub
+  - keys/users/nover.pub
+  - keys/users/nmorgan.pub
+  - keys/users/pmckissock.pub
+
+# ruby
+ruby_version: 3.0.0
+ruby_bundler_version: 2.5.11
+
+# ssl
+ssl_certificates:
+  - type:    certbot
+    domain:  haxxornews.vigetx.com
+    email:   devops@viget.com
+
+# nginx
+nginx_passenger: True
+
+nginx_sites:
+  - state:       enabled
+    domain:      haxxornews.vigetx.com
+    template:    haxxornews.vigetx.com.conf
+    name:        haxxornews
+    type:        rails
+    environment: production
+    root:        current/public
+    ssl:         certbot
+    robots:      true
+
+# rails
+rails_apps:
+  - name:        haxxornews
+    environment: production
+    config_files:
+      - src: templates/app/master.key.j2
+        dest: shared/config/master.key
+        master_key: "{{ vault.master_key }}"

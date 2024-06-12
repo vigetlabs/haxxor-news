@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+server {
+  listen 80 default_server;
+
+  server_name _;
+
+  location / {
+    return 200 'healthy';
+  }
+}

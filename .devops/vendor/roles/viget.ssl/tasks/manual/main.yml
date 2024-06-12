@@ -1,0 +1,7 @@
+---
+- tags: ssl
+  block:
+    - include_tasks: certificate.yml
+      with_items: "{{ __ssl_certs_manual }}"
+      loop_control:
+        loop_var: cert

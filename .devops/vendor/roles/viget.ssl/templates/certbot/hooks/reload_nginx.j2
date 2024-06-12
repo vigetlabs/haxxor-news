@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# {{ ansible_managed }}
+
+set -e
+
+nginx -t 2>&1 && {{ ssl_certbot_renewal_hook_nginx }}

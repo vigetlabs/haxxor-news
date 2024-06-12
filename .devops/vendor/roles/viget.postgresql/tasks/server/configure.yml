@@ -1,0 +1,17 @@
+---
+- tags: postgresql
+  block:
+    - name: Configure listening address
+      lineinfile:
+        dest:   "{{ postgresql_config_path }}/postgresql.conf"
+        regexp: "listen_addresses ="
+        line:   "listen_addresses = '{{ postgresql_bind_address }},localhost'"
+      notify: restart postgresql
+      when: postgresql_bind_address != ""
+
+    - name: Configure port
+      lineinfile:
+        dest:   "{{ postgresql_config_path }}/postgresql.conf"
+        regexp: "port ="
+        line:   "port = {{ postgresql_listen_port }}"
+      notify: restart postgresql

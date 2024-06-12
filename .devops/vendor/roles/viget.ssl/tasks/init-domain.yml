@@ -1,0 +1,12 @@
+---
+- tags: ssl
+  block:
+    - name: Create {{ domain }} certs directories
+      file:
+        path:  "{{ ssl_root }}/{{ item }}"
+        state: directory
+      with_items:
+        - "{{ domain }}"
+        - "{{ domain }}/certbot"
+        - "{{ domain }}/selfsigned"
+        - "{{ domain }}/manual"

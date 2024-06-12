@@ -1,0 +1,7 @@
+---
+- tags: ssl
+  block:
+    - name: Create {{ cert.domain }} webroot
+      file:
+        path:  "{{ __ssl_certbot_webroot }}"
+        state: directory

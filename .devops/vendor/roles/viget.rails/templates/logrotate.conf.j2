@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+{{ __rails_app_shared_path }}/log/*.log {
+  su root root
+  missingok
+  size 100M
+  copytruncate
+  compress
+  delaycompress
+  notifempty
+  rotate 10
+}

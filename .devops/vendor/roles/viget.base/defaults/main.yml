@@ -1,0 +1,39 @@
+---
+base_secure_ssh: yes
+base_ssh_port: 22
+base_ssh_challenge_response_auth: "no"
+base_ssh_gss_api_authentication: "no"
+base_ssh_password_authentication: "no"
+base_ssh_permit_empty_password: "no"
+base_ssh_permit_root_login: "no"
+base_ssh_usedns: "no"
+base_ssh_x11_forwarding: "no"
+base_ssh_options: []
+base_ssh_allow_users_enabled: false
+base_ssh_allow_users: []
+
+base_hostname: "{{ inventory_hostname }}"
+
+base_autoupdate_enabled: yes
+base_autoupdate_blacklist: []
+base_autoupdate_allowed_origins: []
+base_autoupdate_remove_unused: yes
+base_autoupdate_reboot: false
+
+base_fail2ban_enabled: yes
+
+base_locale: en_US.UTF-8
+
+base_timezone: America/New_York
+base_ntp_enabled: no
+base_timedatectl_enabled: yes
+
+base_swapfile_enabled: yes
+base_swapfile_location: /swapfile
+base_swapfile_size: 1024MB
+base_swapfile_swappiness: 10
+base_swapfile_vfs_cache_pressure: 50
+base_swapfile_use_dd: False
+
+base_python_pip_version: 22.2.2
+base_python_upgrade_pip: false

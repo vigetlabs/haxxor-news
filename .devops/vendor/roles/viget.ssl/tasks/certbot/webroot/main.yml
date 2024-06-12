@@ -1,0 +1,20 @@
+---
+- tags: ssl
+  block:
+    - include_tasks: setup.yml
+
+    - name: Acquire {{ cert.domain }} certificate via webroot
+      shell: |
+        certbot certonly \
+          --agree-tos \
+          --email {{ cert.email }} \
+          --rsa-key-size 4096 \
+          --webroot \
+          --webroot-path {{ __ssl_certbot_webroot }} \
+          {{ __ssl_certbot_staging | ternary('--staging', '') }} \
+          {{ __ssl_certbot_options | join(' ') }}
+      args:
+        executable: /bin/bash
+        creates:    "{{ ssl_certbot_root }}/live/{{ cert.domain }}/privkey.pem"
+
+    - include_tasks: renewal.yml

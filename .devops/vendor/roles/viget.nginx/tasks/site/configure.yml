@@ -1,0 +1,38 @@
+---
+- tags: nginx
+  block:
+    - set_fact:
+        __nginx_site_file: "{{ site.file | default('healthcheck.conf') }}"
+      when: site.type == 'healthcheck'
+
+    - set_fact:
+        __nginx_site_file: "{{ site.file | default(site.domain + '.conf') }}"
+      when: site.type != 'healthcheck'
+
+    - set_fact:
+        __nginx_site_local_template:  "{{ __nginx_local_templates_dir }}/sites/{{ site.template | default(__nginx_site_file) }}.j2"
+        __nginx_site_available_path:  "{{ nginx_config_path }}/sites-available/{{ __nginx_site_file }}"
+        __nginx_site_enabled_path:    "{{ nginx_config_path }}/sites-enabled/{{ __nginx_site_file }}"
+
+    - fail:
+        msg: "site variable 'state' must be one of ['enabled', 'disabled', 'absent']"
+      when: site.state is undefined or (site.state not in ['enabled', 'disabled', 'absent'])
+
+    # Absent
+    - include_tasks: absent.yml
+      when: site.state == 'absent'
+
+    - when: site.state != 'absent'
+      block:
+        - include_tasks: site/install.yml
+
+        - include_tasks: site/basic-auth.yml
+          when: site.auth is defined and site.auth is not none and site.domain is defined
+
+        # Enable
+        - include_tasks: site/enabled.yml
+          when: site.state == 'enabled'
+
+        # Disable
+        - include_tasks: site/disabled.yml
+          when: site.state == 'disabled'

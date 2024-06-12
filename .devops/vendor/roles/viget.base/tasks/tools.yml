@@ -1,0 +1,17 @@
+---
+- tags: base
+  block:
+    - name: "tools : Install basic software & tools"
+      apt:
+        pkg:
+          - apt-transport-https
+          - acl
+          - ca-certificates
+          - curl
+          - git
+          - tmux
+          - unzip
+          - vim
+          - wget
+          - zip
+        state: present

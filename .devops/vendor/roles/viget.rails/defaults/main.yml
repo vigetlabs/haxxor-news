@@ -1,0 +1,6 @@
+---
+rails_apps: []
+
+rails_app_owner: deploy
+rails_app_group: www-data
+rails_app_mode:  "2775"

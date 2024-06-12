@@ -1,0 +1,16 @@
+---
+- tags: postgresql
+  block:
+    - name: Find client auth config file
+      command: psql -tAc "SHOW hba_file"
+      become: yes
+      become_user: "{{ postgresql_server_user }}"
+      register: __postgresql_hba_path
+      changed_when: false
+      check_mode: no
+
+    - name: Install client auth config file
+      template:
+        src:  "pg_hba.conf.j2"
+        dest: "{{ __postgresql_hba_path.stdout }}"
+      notify: restart postgresql

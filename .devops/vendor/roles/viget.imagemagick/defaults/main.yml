@@ -1,0 +1,7 @@
+---
+imagemagick_conf_path: /etc/ImageMagick-6
+
+imagemagick_memory:
+imagemagick_disk:
+
+imagemagick_policies: []

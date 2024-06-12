@@ -1,0 +1,17 @@
+---
+- tags: ssl
+  block:
+    - name: Install pip3
+      apt:
+        name:  python3-pip
+        state: present
+
+    - name: Install PyOpenSSL library
+      pip:
+        name:  pyOpenSSL
+        state: present
+
+    - include_tasks: certificate.yml
+      with_items: "{{ __ssl_certs_self }}"
+      loop_control:
+        loop_var: cert

@@ -1,0 +1,54 @@
+# {{ ansible_managed }}
+
+user www-data;
+pid  /run/nginx.pid;
+
+worker_processes auto;
+
+{% if ansible_distribution_major_version | int >= 18 -%}
+include /etc/nginx/modules-enabled/*.conf;
+{% endif -%}
+
+events {
+  worker_connections 1024;
+}
+
+http {
+  sendfile    on;
+  tcp_nopush  on;
+  tcp_nodelay on;
+
+  types_hash_max_size    2048;
+  types_hash_bucket_size 128;
+
+  include mime.types;
+  default_type application/octet-stream;
+
+  access_log /var/log/nginx/access.log;
+  error_log  /var/log/nginx/error.log;
+
+  keepalive_timeout 65s;
+  client_max_body_size 50M;
+
+  {% if nginx_rate_limit -%}
+  include conf.d/http/rate-limit.conf;
+  {% endif -%}
+  include conf.d/http/gzip.conf;
+  include conf.d/http/security.conf;
+
+  {% if nginx_status_page -%}
+  include conf.d/http/stub_status.conf;
+  {% endif -%}
+
+  {% if nginx_passenger -%}
+  {% if ansible_distribution_major_version | int >= 18 -%}
+  include conf.d/mod-http-passenger.conf;
+  {% else -%}
+  include passenger.conf;
+  {% endif -%}
+  {% endif -%}
+
+  include conf.d/nginx-local.conf;
+
+  include sites-enabled/*;
+}

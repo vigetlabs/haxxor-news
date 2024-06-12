@@ -1,0 +1,35 @@
+---
+nginx_install:      true
+nginx_default_site: true
+
+nginx_passenger:            false
+nginx_passenger_repository: "{{ ansible_distribution_release }}"
+
+nginx_web_root:       /var/www
+nginx_web_root_owner: deploy
+nginx_web_root_group: www-data
+nginx_web_root_mode:  "2775"
+
+nginx_sites: []
+
+nginx_config_path:     /etc/nginx
+nginx_confd_path:      "{{ nginx_config_path }}/conf.d"
+nginx_basic_auth_path: "{{ nginx_confd_path }}/auth"
+nginx_dhparam_path:    "{{ nginx_config_path }}/dhparam.pem"
+
+nginx_extra_confd_files: []
+
+nginx_hsts: true
+nginx_hsts_include_subdomains: false
+
+nginx_status_page: true
+
+nginx_rate_limit:     true
+nginx_rate_limit_key: binary_remote_addr
+
+nginx_php_version:    "{{ php_version | default('7.3') }}"
+nginx_php_fpm_socket: "/var/run/php/php{{ nginx_php_version }}-fpm-www.sock"
+
+nginx_disabled_modules:
+  - lua
+  - perl

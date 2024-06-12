@@ -1,0 +1,4 @@
+---
+firewall_rules: []
+
+firewall_ssh_port: 22

@@ -1,0 +1,54 @@
+<% extends "master.conf.j2" %>
+
+<% block config -%>
+  include conf.d/server/xss-protection.conf;
+
+  index index.html index.php;
+
+  error_page 404 /index.php?$query_string;
+
+  location /uploads/ {
+    try_files $uri $uri/index.html =404;
+  }
+
+  location = /admin.php {
+    return 301 https://$server_name/admin;
+  }
+
+  location / {
+    try_files $uri /index.php?$query_string;
+  }
+
+  location ~ \.php$ {
+    try_files $uri =404;
+
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    fastcgi_pass unix:{{ nginx_php_fpm_socket }};
+    fastcgi_index index.php;
+
+    include fastcgi_params;
+
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param PATH_INFO $fastcgi_path_info;
+    fastcgi_param HTTP_PROXY "";
+    fastcgi_param HTTP_HOST {{ site.domain }};
+  }
+
+  # Remove trailing slash
+  rewrite ^/(.*)/$ /$1 permanent;
+
+  location ~* \.(?:ttf|ttc|otf|eot|woff|woff2)$ {
+    try_files $uri /index.php?$query_string&$args;
+    expires 1M;
+  }
+
+  location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc)$ {
+    try_files $uri $uri/ /index.php?$query_string&$args;
+    expires 1M;
+  }
+
+  location ~* \.(?:css|js)$ {
+    try_files $uri $uri/ /index.php?$query_string&$args;
+    expires 1y;
+  }
+<% endblock %>

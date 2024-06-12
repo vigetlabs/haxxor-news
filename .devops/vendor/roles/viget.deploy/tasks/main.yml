@@ -1,0 +1,19 @@
+---
+- tags: deploy
+  block:
+    - include_tasks: create_user.yml
+      when: deploy_user_create_user
+
+    - include_tasks: generate_ssh_key.yml
+      when: deploy_user_generate_ssh_key
+
+    - include_tasks: fetch_ssh_key.yml
+      when: deploy_user_fetch_ssh_key
+
+    - include_tasks: install_ssh_key.yml
+      when: deploy_user_install_ssh_key
+
+    - include_tasks: authorized_keys.yml
+
+    - include_tasks: cache_github_key.yml
+      when: deploy_user_cache_github_host_key

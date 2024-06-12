@@ -1,0 +1,7 @@
+---
+- tags: rails
+  block:
+    - include_tasks: configure.yml
+      with_items: "{{ rails_apps }}"
+      loop_control:
+        loop_var: app

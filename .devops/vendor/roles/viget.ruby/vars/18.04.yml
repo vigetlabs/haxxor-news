@@ -1,0 +1,14 @@
+---
+ruby_dependencies:
+  - autoconf
+  - bison
+  - build-essential
+  - libffi-dev
+  - libgdbm5
+  - libgdbm-dev
+  - libncurses5-dev
+  - libreadline6-dev
+  - libssl-dev
+  - libyaml-dev
+  - zlib1g
+  - zlib1g-dev

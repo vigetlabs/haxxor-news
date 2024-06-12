@@ -1,0 +1,48 @@
+---
+- tags: ssl
+  block:
+    - set_fact:
+        __ssl_cert_root: "{{ ssl_root }}/{{ cert.domain }}"
+
+    - set_fact:
+        __ssl_self_root: "{{ __ssl_cert_root }}/selfsigned"
+
+    - set_fact:
+        __ssl_self_private_key: "{{ __ssl_self_root }}/privkey.pem"
+        __ssl_self_public_key:  "{{ __ssl_self_root }}/pubkey.pem"
+        __ssl_self_csr:         "{{ __ssl_self_root }}/csr.pem"
+        __ssl_self_cert:        "{{ __ssl_self_root }}/cert.pem"
+        __ssl_self_domains:     "['{{ cert.domain }}'] + {{ cert.aliases | default([]) }}"
+        __ssl_self_san:         []
+
+    - set_fact:
+        __ssl_self_san: "{{ __ssl_self_san }} + ['DNS:{{ item }}']"
+      with_items: "{{ __ssl_self_domains }}"
+
+    - include_tasks: ../init-domain.yml
+      vars:
+        domain: "{{ cert.domain }}"
+
+    - name: Create {{ cert.domain }} private key
+      openssl_privatekey:
+        path: "{{ __ssl_self_private_key }}"
+        size: 4096
+
+    - name: Create {{ cert.domain }} public key
+      openssl_publickey:
+        path:            "{{ __ssl_self_public_key }}"
+        privatekey_path: "{{ __ssl_self_private_key }}"
+
+    - name: Create {{ cert.domain }} CSR
+      openssl_csr:
+        path:             "{{ __ssl_self_csr }}"
+        privatekey_path:  "{{ __ssl_self_private_key }}"
+        common_name:      "{{ cert.domain }}"
+        subject_alt_name: "{{ __ssl_self_san | join(',') }}"
+
+    - name: Create {{ cert.domain }} certificate
+      openssl_certificate:
+        provider:        selfsigned
+        path:            "{{ __ssl_self_cert }}"
+        csr_path:        "{{ __ssl_self_csr }}"
+        privatekey_path: "{{ __ssl_self_private_key }}"

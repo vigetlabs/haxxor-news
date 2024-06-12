@@ -1,0 +1,7 @@
+<% extends "master.conf.j2" %>
+
+<% block config -%>
+  include conf.d/server/xss-protection.conf;
+
+  index index.html;
+<% endblock %>

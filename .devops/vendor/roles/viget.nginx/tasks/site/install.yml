@@ -1,0 +1,33 @@
+---
+- tags: nginx
+  block:
+    - set_fact:
+        __nginx_site_ssl: "{{ site.ssl | default('certbot') }}"
+
+    - name: "{{ site.domain }} : Create {{ __nginx_site_file }} local template"
+      local_action:
+        module: template
+        src:    "{{ role_path }}/templates/sites/{{ site.type }}.conf.j2"
+        dest:   "{{ __nginx_site_local_template }}"
+        force:  "{{ site.force | default(False) }}"
+
+        block_start_string:    "<%"
+        block_end_string:      "%>"
+        variable_start_string: "<="
+        variable_end_string:   "=>"
+      become: no
+
+    - name: "{{ site.domain }} : Install {{ __nginx_site_file }} config"
+      template:
+        src:  "{{ __nginx_site_local_template }}"
+        dest: "{{ __nginx_site_available_path }}"
+      notify: reload nginx
+
+    - name: "{{ site.domain }} : Create {{ site.domain }} web root"
+      file:
+        state: directory
+        path:  "{{ nginx_web_root }}/{{ site.name }}/{{ site.environment }}"
+        owner: "{{ nginx_web_root_owner }}"
+        group: "{{ nginx_web_root_group }}"
+        mode:  "{{ nginx_web_root_mode }}"
+      when: site.type not in ["blank", "healthcheck"]

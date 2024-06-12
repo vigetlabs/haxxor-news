@@ -1,0 +1,28 @@
+---
+- tags: nginx
+  block:
+    - become: no
+      block:
+        - name: Make local nginx templates directory
+          local_action:
+            module: file
+            path:   "{{ item }}"
+            state:  directory
+          with_items:
+            - "{{ __nginx_local_templates_dir }}"
+            - "{{ __nginx_local_templates_dir }}/conf.d"
+            - "{{ __nginx_local_templates_dir }}/conf.d/http"
+            - "{{ __nginx_local_templates_dir }}/conf.d/server"
+            - "{{ __nginx_local_templates_dir }}/sites"
+
+        - name: Create nginx-local.conf.j2 template
+          local_action:
+            module: template
+            src:    "{{ role_path }}/templates/nginx-local.conf.j2"
+            dest:   "{{ __nginx_local_templates_dir }}/nginx-local.conf.j2"
+            force:  no
+
+            block_start_string:    "<%"
+            block_end_string:      "%>"
+            variable_start_string: "<="
+            variable_end_string:   "=>"

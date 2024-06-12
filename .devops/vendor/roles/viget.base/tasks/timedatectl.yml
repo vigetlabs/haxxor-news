@@ -1,0 +1,40 @@
+---
+- tags: base
+  block:
+    - set_fact:
+        __base_timedatectl_ntp_sentinel: "NTP enabled: yes"
+      when: ansible_distribution_version == "14.04"
+
+    - set_fact:
+        __base_timedatectl_ntp_sentinel: "Network time on: yes"
+      when: ansible_distribution_version == "16.04"
+
+    - set_fact:
+        __base_timedatectl_ntp_sentinel: "systemd-timesyncd.service active: yes"
+      when: ansible_distribution_version == "18.04"
+
+    - set_fact:
+        __base_timedatectl_ntp_sentinel: "NTP service: active"
+      when: ansible_distribution_version == "20.04"
+
+    - set_fact:
+        __base_timedatectl_ntp_sentinel: "NTP service: active"
+      when: ansible_distribution_version == "22.04"
+
+    - name: "timezone : Check timedatectl status"
+      command: timedatectl
+      register: __base_timedatectl_status
+      check_mode: no
+      changed_when: no
+
+    - set_fact:
+        __base_timedatectl_ntp_on: '{{ __base_timedatectl_ntp_sentinel in __base_timedatectl_status.stdout }}'
+
+    - name: "timezone : Enable timedatectl network time"
+      command: timedatectl set-ntp on
+      when: not __base_timedatectl_ntp_on
+
+    - name: "timezone : Set timezone"
+      timezone:
+        name: "{{ base_timezone }}"
+      notify: restart cron

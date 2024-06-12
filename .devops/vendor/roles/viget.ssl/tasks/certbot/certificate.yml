@@ -1,0 +1,37 @@
+---
+- tags: ssl
+  block:
+    - set_fact:
+        __ssl_certbot_mode:    "{{ cert.mode | default('standalone') }}"
+        __ssl_certbot_aliases: "{{ cert.aliases | default([]) }}"
+        __ssl_certbot_staging: "{{ cert.staging | default(False) }}"
+        __ssl_certbot_options: []
+        __ssl_certbot_webroot: "{{ ssl_certbot_root }}/webroots/{{ cert.domain }}"
+
+    - set_fact:
+        # Combine domain and aliases into a single list
+        __ssl_certbot_domains: "{{ [cert.domain] + __ssl_certbot_aliases }}"
+
+    - set_fact:
+        # Prepend "-d" to each item in the list
+        __ssl_certbot_options: "{{ __ssl_certbot_options + ['-d ' + item ] }}"
+      with_items: "{{ __ssl_certbot_domains }}"
+
+    - include_tasks: ../init-domain.yml
+      vars:
+        domain: "{{ cert.domain }}"
+
+    # Acquire certificate
+    - include_tasks: "{{ __ssl_certbot_mode }}/main.yml"
+
+    # Link certificate
+    - name: Link {{ cert.domain }} files to {{ ssl_root }}/{{ cert.domain }}/certbot directory
+      file:
+        state: link
+        src:   "{{ ssl_certbot_root }}/live/{{ cert.domain }}/{{ item }}"
+        dest:  "{{ ssl_root }}/{{ cert.domain }}/certbot/{{ item }}"
+      with_items:
+        - cert.pem
+        - chain.pem
+        - fullchain.pem
+        - privkey.pem
