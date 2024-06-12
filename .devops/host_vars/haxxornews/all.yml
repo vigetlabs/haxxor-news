@@ -13,6 +13,7 @@ deploy_user_authorized_keys:
   - keys/users/nover.pub
   - keys/users/nmorgan.pub
   - keys/users/pmckissock.pub
+  - keys/system/github.pub
 
 # ruby
 ruby_version: 3.0.0
