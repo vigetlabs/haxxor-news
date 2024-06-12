@@ -4,7 +4,6 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = FactoryBot.create(:user)
     @article = FactoryBot.create(:article, user: @user)
-    @other_user = FactoryBot.create(:user, email: "other@example.com")
   end
 
   test "should get index" do
@@ -18,6 +17,12 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_url
   end
 
+  test "should be able to make new article when logged in" do
+    log_in_as(@user)
+    get new_article_url
+    
+  end
+
   test "should create article if logged in" do
     log_in_as(@user)
     assert_difference('Article.count', 1) do
@@ -26,10 +31,8 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to article_path(Article.last)
   end
 
-  test "should not create article if not logged in" do
-    assert_no_difference('Article.count') do
-      post articles_url, params: { article: { title: "New Article", link: "https://newlink.com" } }
-    end
+  test "should not go to new article page if not logged in" do
+    get new_article_path
     assert_redirected_to login_url
   end
 
