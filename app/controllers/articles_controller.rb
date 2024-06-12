@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :authorized, only: [:new]
+  before_action :authorized, only: [:new, :create]
   def index
     @articles = Article.all
   end
