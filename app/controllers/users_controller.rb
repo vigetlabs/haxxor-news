@@ -8,8 +8,11 @@ class UsersController < ApplicationController
     @user = User.create(user_params)
     if @user.valid?
       @user.save
+      redirect_to @user
+    else
+      redirect_to root_path
     end
-    redirect_to @user
+    
   end
 
   def show
