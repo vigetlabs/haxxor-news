@@ -3,7 +3,7 @@ require "test_helper"
 class UsersControllerTest < ActionDispatch::IntegrationTest
   include FactoryBot::Syntax::Methods
 
-  def setup
+  setup do
     @user = create(:user)
     @valid_user_params = {user: attributes_for(:user)}
     @invalid_user_params = {user: {name: "", email: "invalid", password: "pass", password_confirmation: "word"}}

@@ -2,6 +2,6 @@ FactoryBot.define do
   factory :article do
     title { "Ruby on Rails" }
     link { "https://rubyonrails.org/" }
-    association :user
+    association :user, factory: :user
   end
 end
