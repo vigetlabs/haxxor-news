@@ -13,13 +13,13 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create session with valid credentials" do
-    post login_path, params: { name: @user.name, password: "password" }
+    post login_path, params: {name: @user.name, password: "password"}
     assert_redirected_to @user
     assert_equal @user.id, session[:user_id]
   end
 
   test "should not create session with invalid credentials" do
-    post login_path, params: { name: @user.name, password: "wrongpassword" }
+    post login_path, params: {name: @user.name, password: "wrongpassword"}
     assert_redirected_to root_path
     assert_nil session[:user_id]
   end
@@ -34,6 +34,6 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   private
 
   def log_in_as(user)
-    post login_path, params: { name: user.name, password: "password" }
+    post login_path, params: {name: user.name, password: "password"}
   end
 end

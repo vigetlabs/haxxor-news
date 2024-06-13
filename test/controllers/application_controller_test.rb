@@ -54,6 +54,6 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
 
   # Simulate a logged-in user
   def log_in_as(user)
-    post login_url, params: { name: user.name, password: "password" }
+    post login_url, params: {name: user.name, password: "password"}
   end
 end
