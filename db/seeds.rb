@@ -11,14 +11,14 @@ User.destroy_all
 Article.destroy_all
 
 users = [
-  {name: "Alice", email: "alice@example.com", password: "password"},
-  {name: "Bob", email: "bob@example.com", password: "password"}
+  {name: "Alice", email: "alice@example.com"},
+  {name: "Bob", email: "bob@example.com"}
 ]
 
 users.each do |user_params|
   User.find_or_create_by!(email: user_params[:email]) do |user|
     user.name = user_params[:name]
-    user.password = user_params[:password]
+    user.password = "password"
   end
 end
 
