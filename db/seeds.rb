@@ -13,10 +13,10 @@ Article.destroy_all
 
 # Create users
 users = [
-  { name: "Alice", email: "alice@example.com", password: "password" },
-  { name: "Bob", email: "bob@example.com", password: "password" },
-  { name: "Joe", email: "joe@example.com", password: "password" },
-  { name: "Steve", email: "steve@example.com", password: "password" }
+  {name: "Alice", email: "alice@example.com", password: "password"},
+  {name: "Bob", email: "bob@example.com", password: "password"},
+  {name: "Joe", email: "joe@example.com", password: "password"},
+  {name: "Steve", email: "steve@example.com", password: "password"}
 ]
 
 users.each do |user_params|
