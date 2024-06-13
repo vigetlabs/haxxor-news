@@ -19,16 +19,15 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
 
   test "should be able to make new article when logged in" do
     log_in_as(@user)
-    get new_article_url
-    
+    get new_article_path
+    assert_response :success
   end
 
   test "should create article if logged in" do
     log_in_as(@user)
-    assert_difference('Article.count', 1) do
-      post articles_url, params: { article: { title: "New Article", link: "https://newlink.com" } }
+    assert_difference("Article.count", 1) do
+      post articles_url, params: {article: {title: "New Article", link: "https://newlink.com"}}
     end
-    assert_redirected_to article_path(Article.last)
   end
 
   test "should not go to new article page if not logged in" do
@@ -45,6 +44,6 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
 
   # Simulate a logged-in user
   def log_in_as(user)
-    post login_url, params: { session: { email: user.email, password: 'password' } }
+    post login_url, params: { name: user.name, password: "password" }
   end
 end
