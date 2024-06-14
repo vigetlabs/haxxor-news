@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root "articles#index"
   resources :articles
-  resources :users
+  resources :users, only: [:create, :show]
   get "/signup", to: "users#new"
   get "/login", to: "sessions#new"
   post "/login", to: "sessions#create"

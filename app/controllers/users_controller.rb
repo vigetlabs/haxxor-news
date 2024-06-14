@@ -15,15 +15,15 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    user
   end
 
   def edit_email
-    @user = User.find(params[:id])
+    user
   end
 
   def update_email
-    @user = User.find(params[:id])
+    user
     if @user.update(email_params)
       redirect_to @user
     else
@@ -32,11 +32,11 @@ class UsersController < ApplicationController
   end
 
   def edit_password
-    @user = User.find(params[:id])
+    user
   end
 
   def update_password
-    @user = User.find(params[:id])
+    user
     if @user.update(password_params)
       redirect_to @user
     else
@@ -57,4 +57,8 @@ class UsersController < ApplicationController
   def password_params
     params.require(:user).permit(:password, :password_confirmation)
   end
+  def user
+    @user ||= User.find(params[:id])
+  end
+  helper_method :user
 end
