@@ -1,8 +1,6 @@
 require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
-  include FactoryBot::Syntax::Methods
-
   setup do
     @user = create(:user)
     @valid_user_params = {user: attributes_for(:user)}
@@ -24,7 +22,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should show user when authorized" do
-    login_as(@user)
+    log_in_as(@user)
     get user_path(@user)
     assert_response :success
     assert_select "h1", @user.name
@@ -33,11 +31,5 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "should redirect show when not authorized" do
     get user_path(@user)
     assert_redirected_to login_path
-  end
-
-  private
-
-  def login_as(user)
-    post login_path, params: {name: user.name, password: user.password}
   end
 end

@@ -75,6 +75,8 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "rails-controller-testing"
+  gem "minitest-rails"
+  gem "minitest-spec-rails"
 end
 
 gem "dockerfile-rails", ">= 1.6", group: :development
