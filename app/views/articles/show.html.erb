@@ -1,3 +1,21 @@
 <h1><%= @article.title %></h1>
 <p><%= link_to @article.link, @article.link %></p>
-<%= link_to 'Back to Home', root_path, class: 'btn btn-primary' %>
+
+<%= form_with(model: [@article, @comment], local: true) do |form| %>
+  <div class="field">
+    <%= form.label :text %>
+    <%= form.text_area :text %>
+  </div>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<h2>Comments</h2>
+<ul>
+  <% @comments.each do |comment| %>
+    <li>
+      <%= comment.text %> - Posted by <%= comment.user.name %> on <%= comment.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+    </li>
+  <% end %>
+</ul>
