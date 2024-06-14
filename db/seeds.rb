@@ -13,26 +13,12 @@ Article.destroy_all
 
 # Create users
 users = [
-<<<<<<< HEAD
   {name: "Alice", email: "alice@example.com", password: "password"},
-  {name: "Bob", email: "bob@example.com", password: "password"},
-  {name: "Joe", email: "joe@example.com", password: "password"},
-  {name: "Steve", email: "steve@example.com", password: "password"}
+  {name: "Bob", email: "bob@example.com", password: "password"}
 ]
 
 users.each do |user_params|
   User.create!(user_params)
-=======
-  {name: "Alice", email: "alice@example.com"},
-  {name: "Bob", email: "bob@example.com"}
-]
-
-users.each do |user_params|
-  User.find_or_create_by!(email: user_params[:email]) do |user|
-    user.name = user_params[:name]
-    user.password = "password"
-  end
->>>>>>> users
 end
 
 # Ensure users are created before creating articles
