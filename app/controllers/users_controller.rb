@@ -23,7 +23,6 @@ class UsersController < ApplicationController
   end
 
   def update_email
-    user
     if @user.update(email_params)
       redirect_to @user
     else
@@ -36,7 +35,6 @@ class UsersController < ApplicationController
   end
 
   def update_password
-    user
     if @user.update(password_params)
       redirect_to @user
     else
