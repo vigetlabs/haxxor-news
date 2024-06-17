@@ -14,7 +14,7 @@
 <ul>
   <% @comments.each do |comment| %>
     <li>
-      <%= comment.text %> - Posted by <%= comment.user.name %> on <%= comment.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+      <%= comment.text %> - Posted by <%= link_to comment.user.name, comment.user %> on <%= comment.created_at.strftime("%B %d, %Y at %I:%M %p") %>
     </li>
   <% end %>
 </ul>
