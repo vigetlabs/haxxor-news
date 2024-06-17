@@ -5,17 +5,16 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.create(user_params)
-    if @user.valid?
-      @user.save
-      redirect_to @user
+    user = User.create(user_params)
+    if user.valid?
+      user.save
+      redirect_to user
     else
       redirect_to root_path
     end
   end
 
   def show
-    user
   end
 
   def edit_email
@@ -23,8 +22,8 @@ class UsersController < ApplicationController
   end
 
   def update_email
-    if @user.update(email_params)
-      redirect_to @user
+    if user.update(email_params)
+      redirect_to user
     else
       render :edit_email
     end
@@ -35,8 +34,8 @@ class UsersController < ApplicationController
   end
 
   def update_password
-    if @user.update(password_params)
-      redirect_to @user
+    if user.update(password_params)
+      redirect_to user
     else
       render :edit_password
     end
