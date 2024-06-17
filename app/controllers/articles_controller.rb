@@ -6,7 +6,7 @@ class ArticlesController < ApplicationController
 
   def show
     @article = Article.find(params[:id])
-    @comments = @article.comments.order(created_at: :desc).limit(20)
+    @comments = @article.comments.order(created_at: :desc)
     @comment = Comment.new
   end
 
