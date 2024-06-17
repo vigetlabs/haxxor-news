@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
 
+  get "/users/:id/comments", to: "users#comments", as: "show_comment"
+  get "/users/:id/articles", to: "users#articles", as: "show_article"
   get "/users/:id/edit_email", to: "users#edit_email", as: "edit_email_user"
   patch "/users/:id/update_email", to: "users#update_email", as: "update_email_user"
   get "/users/:id/edit_password", to: "users#edit_password", as: "edit_password_user"

@@ -1,0 +1,12 @@
+<h1> <%= user.name %>'s Articles</h1>
+<ul>
+  <% user.articles.each do |article| %>
+    <li>
+    <%= link_to article.title, article.link %> - Posted on <%= article.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+    <div>
+      <%= link_to "comment", article %>
+    </div>
+    </li>
+  <% end %>
+</ul>
+

@@ -1,4 +1,6 @@
 <h1><%= user.name %></h1>
+<%= link_to "articles", show_article_url%>
+<%= link_to "comments", show_comment_url%>
 <% if user == current_user %>
     <p>Email: <%= user.email %></p>
     <%= button_to "Change Email", edit_email_user_path(user), method: :get %>
