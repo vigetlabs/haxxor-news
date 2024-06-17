@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.create(user_params)
+    @user = User.create(user_params)
     if user.valid?
       user.save
       redirect_to user
@@ -18,7 +18,6 @@ class UsersController < ApplicationController
   end
 
   def edit_email
-    user
   end
 
   def update_email
@@ -30,7 +29,6 @@ class UsersController < ApplicationController
   end
 
   def edit_password
-    user
   end
 
   def update_password
