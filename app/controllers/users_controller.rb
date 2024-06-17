@@ -17,6 +17,14 @@ class UsersController < ApplicationController
   def show
   end
 
+  def articles
+    @articles = user.articles.order(created_at: :desc)
+  end
+
+  def comments
+    @comments = user.comments.order(created_at: :desc)
+  end
+
   def edit_email
   end
 
