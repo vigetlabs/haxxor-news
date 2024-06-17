@@ -6,39 +6,34 @@ class UsersController < ApplicationController
 
   def create
     @user = User.create(user_params)
-    if @user.valid?
-      @user.save
-      redirect_to @user
+    if user.valid?
+      user.save
+      redirect_to user
     else
       redirect_to root_path
     end
   end
 
   def show
-    @user = User.find(params[:id])
   end
 
   def edit_email
-    @user = User.find(params[:id])
   end
 
   def update_email
-    @user = User.find(params[:id])
-    if @user.update(email_params)
-      redirect_to @user
+    if user.update(email_params)
+      redirect_to user
     else
       render :edit_email
     end
   end
 
   def edit_password
-    @user = User.find(params[:id])
   end
 
   def update_password
-    @user = User.find(params[:id])
-    if @user.update(password_params)
-      redirect_to @user
+    if user.update(password_params)
+      redirect_to user
     else
       render :edit_password
     end
@@ -57,4 +52,9 @@ class UsersController < ApplicationController
   def password_params
     params.require(:user).permit(:password, :password_confirmation)
   end
+
+  def user
+    @user ||= User.find(params[:id])
+  end
+  helper_method :user
 end
