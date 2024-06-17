@@ -1,6 +1,7 @@
 class ArticlesController < ApplicationController
+  before_action :authorized, only: [:new, :create]
   def index
-    @articles = Article.all
+    @articles = Article.order(created_at: :desc).page(params[:page]).per(20)
   end
 
   def show
@@ -13,6 +14,7 @@ class ArticlesController < ApplicationController
 
   def create
     @article = Article.new(article_params)
+    @article.user = current_user
 
     if @article.save
       redirect_to @article

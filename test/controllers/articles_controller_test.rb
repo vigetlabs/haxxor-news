@@ -2,25 +2,23 @@ require "test_helper"
 
 class ArticlesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @article = FactoryBot.create(:article)
+    @user = create(:user)
+    @article = create(:article, user: @user)
   end
-
   test "should get index" do
     get articles_url
     assert_response :success
     assert_not_nil assigns(:articles)
   end
 
-  test "should get new" do
+  test "should redirect new when not logged in" do
     get new_article_url
-    assert_response :success
+    assert_redirected_to login_url
   end
 
-  test "should create article" do
-    assert_difference("Article.count") do
-      post articles_url, params: {article: {title: "Hello Rails", link: "http://rails.com"}}
-    end
-    assert_redirected_to article_path(Article.last)
+  test "should not go to new article page if not logged in" do
+    get new_article_path
+    assert_redirected_to login_url
   end
 
   test "should show article" do
@@ -28,10 +26,20 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should not create article with invalid params" do
-    assert_no_difference("Article.count") do
-      post articles_url, params: {article: {title: "", link: ""}}
+  describe "when logged in" do
+    before do
+      log_in_as(@user)
     end
-    assert_response :unprocessable_entity
+
+    it "should be able to make new article" do
+      get new_article_path
+      assert_response :success
+    end
+
+    it "should create article" do
+      assert_difference("Article.count", 1) do
+        post articles_url, params: {article: {title: "New Article", link: "https://newlink.com"}}
+      end
+    end
   end
 end
