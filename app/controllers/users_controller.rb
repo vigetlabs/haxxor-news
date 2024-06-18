@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authorized, only: []
+  before_action :authorized, only: [:update_email, :update_password]
   def new
     @user = User.new
   end
