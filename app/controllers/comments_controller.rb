@@ -9,6 +9,7 @@ class CommentsController < ApplicationController
     if @comment.save
       redirect_to @article
     else
+      @comments = @article.comments.order(created_at: :desc)
       render "articles/show", status: :unprocessable_entity
     end
   end

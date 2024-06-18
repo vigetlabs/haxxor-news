@@ -15,8 +15,8 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
 
   describe "when logged in" do
     before do
-        @user = create(:user) #There are errors if I don't add this line. didn't need this in articles_controller_test
-        log_in_as(@user)
+      @user = create(:user) # There are errors if I don't add this line. didn't need this in articles_controller_test
+      log_in_as(@user)
     end
 
     it "should create comment when logged in" do
