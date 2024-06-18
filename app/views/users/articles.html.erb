@@ -1,4 +1,4 @@
-<h1> <%= user.name %>'s Articles</h1>
+<h1> <%= link_to "#{user.name}'s", user %> Articles</h1>
 <ul>
   <% user.articles.each do |article| %>
     <li>
