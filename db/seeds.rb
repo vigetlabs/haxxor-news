@@ -10,6 +10,7 @@
 # Clear existing records
 User.destroy_all
 Article.destroy_all
+Comment.destroy_all
 
 # Create users
 users = [
@@ -34,6 +35,17 @@ users = User.all
   Article.create!(
     title: "Sample Article #{i + 1}",
     link: "https://example.com/article#{i + 1}",
+    user: users.sample
+  )
+end
+
+articles = Article.all
+
+# Create comments
+90.times do |i|
+  Comment.create!(
+    text: "Sample Comment #{i + 1}",
+    article: articles.sample,
     user: users.sample
   )
 end
