@@ -2,10 +2,10 @@
 <ul>
   <% user.comments.each do |comment| %>
     <li>
-    <%= comment.text %> posted on <%= comment.created_at.strftime("%B %d, %Y at %I:%M %p") %>
-    <div>
-      <%= link_to "Article", comment.article %>
-    </div>
+      <%= comment.text %> posted on <%= comment.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+      <div>
+        <%= link_to "Article", comment.article %>
+      </div>
     </li>
   <% end %>
 </ul>

@@ -36,11 +36,6 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     assert_not @controller.logged_in?
   end
 
-  # test "should redirect to login when not authorized" do
-  #   get user_path(@user)
-  #   assert_redirected_to login_path
-  # end
-
   test "should return true for home? when on root path" do
     get root_path
     assert @controller.home?

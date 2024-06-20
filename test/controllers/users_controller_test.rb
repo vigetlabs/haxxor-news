@@ -27,9 +27,4 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h1", @user.name
   end
-
-  # test "should redirect show when not authorized" do
-  #   get user_path(@user)
-  #   assert_redirected_to login_path
-  # end
 end
