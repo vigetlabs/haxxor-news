@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "3.0.0"
+ruby "3.2.2"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.3", ">= 7.1.3.4"
@@ -50,10 +50,9 @@ gem "bcrypt", "~> 3.1.7"
 # gem "image_processing", "~> 1.2"
 
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[mri mswin mswin64 mingw x64_mingw]
   gem "standard"
   gem "factory_bot_rails"
+  gem "byebug"
 end
 
 group :development do
@@ -76,9 +75,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
-  gem "rails-controller-testing"
-  gem "minitest-rails"
-  gem "minitest-spec-rails"
+  gem "rspec-rails"
 end
 
 gem "dockerfile-rails", ">= 1.6", group: :development
