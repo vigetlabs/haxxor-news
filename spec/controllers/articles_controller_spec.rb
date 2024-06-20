@@ -11,7 +11,7 @@ RSpec.describe ArticlesController, type: :controller do
   end
 
   it "should redirect new when not logged in" do
-    expect(get :new).to redirect_to login_path
+    expect(get(:new)).to redirect_to login_path
   end
 
   it "should show article" do
