@@ -11,6 +11,7 @@ class ArticlesController < ApplicationController
     @comment = Comment.new
   end
 
+  # Testing 3
   def new
     @article = Article.new
   end
