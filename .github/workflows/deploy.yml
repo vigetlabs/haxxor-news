@@ -32,10 +32,10 @@ jobs:
           echo "DEPLOY_ENV=$deploy_env" >> "$GITHUB_ENV"
           echo "Deploy env: $deploy_env"
 
-      - name: Set up ruby 3.0.0
+      - name: Set up ruby 3.2.2
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0.0
+          ruby-version: 3.2.2
           bundler-cache: true
 
       - name: Set git username
