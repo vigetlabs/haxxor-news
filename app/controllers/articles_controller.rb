@@ -4,6 +4,7 @@ class ArticlesController < ApplicationController
     @articles = Article.order(created_at: :desc).page(params[:page]).per(20)
   end
 
+  # Testing
   def show
     @article = Article.find(params[:id])
     @comments = @article.comments.order(created_at: :desc)
