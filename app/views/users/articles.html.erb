@@ -2,10 +2,10 @@
 <ul>
   <% user.articles.each do |article| %>
     <li>
-    <%= link_to article.title, article.link %> - Posted on <%= article.created_at.strftime("%B %d, %Y at %I:%M %p") %>
-    <div>
-      <%= link_to "comment", article %>
-    </div>
+      <%= link_to article.title, article.link %> - Posted on <%= article.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+      <div>
+        <%= link_to "Article Page", article %>
+      </div>
     </li>
   <% end %>
 </ul>
