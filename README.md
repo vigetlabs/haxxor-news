@@ -31,3 +31,9 @@ A Hacker News clone where users can post articles.
     ```sh
     rails server
     ```
+
+### Testing
+
+```sh
+bundle exec rspec
+```
