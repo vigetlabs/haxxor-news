@@ -16,7 +16,7 @@ RSpec.describe SessionsController, type: :controller do
   end
 
   it "should redirect after failed login" do
-    expect(post :create, params: {name: user.name, password: "wrongpassword"}).to redirect_to root_path
+    expect(post(:create, params: {name: user.name, password: "wrongpassword"})).to redirect_to root_path
   end
 
   it "should create session with valid credentials" do
@@ -26,7 +26,7 @@ RSpec.describe SessionsController, type: :controller do
   end
 
   it "should redirect to the user path after login" do
-    expect(post :create, params: {name: user.name, password: "password"}).to redirect_to user_path(user)
+    expect(post(:create, params: {name: user.name, password: "password"})).to redirect_to user_path(user)
   end
 
   describe "when logged in" do
@@ -41,7 +41,7 @@ RSpec.describe SessionsController, type: :controller do
     end
 
     it "should redirect to login page after logout" do
-      expect(delete :destroy).to redirect_to login_path
+      expect(delete(:destroy)).to redirect_to login_path
     end
   end
 end

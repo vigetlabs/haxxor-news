@@ -14,7 +14,7 @@ RSpec.describe CommentsController, type: :controller do
   end
 
   it "should redirect to login path when not logged in" do
-    expect(post :create, params: {article_id: article.id, comment: comment_params}).to redirect_to login_path
+    expect(post(:create, params: {article_id: article.id, comment: comment_params})).to redirect_to login_path
   end
 
   describe "when logged in" do
@@ -31,7 +31,7 @@ RSpec.describe CommentsController, type: :controller do
     end
 
     it "should redirect to article after comment creation" do
-      expect(post :create, params: {article_id: article.id, comment: comment_params}).to redirect_to article_path(article)
+      expect(post(:create, params: {article_id: article.id, comment: comment_params})).to redirect_to article_path(article)
     end
 
     it "should not create comment with invalid params" do

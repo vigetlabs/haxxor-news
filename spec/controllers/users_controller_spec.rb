@@ -18,7 +18,7 @@ RSpec.describe UsersController, type: :controller do
   end
 
   it "should redirect to login when not authorized" do
-    expect(get :show, params: {id: user.id}).to redirect_to login_path
+    expect(get(:show, params: {id: user.id})).to redirect_to login_path
   end
 
   it "should create user with valid params" do
@@ -30,7 +30,7 @@ RSpec.describe UsersController, type: :controller do
   end
 
   it "redirects after successful creation" do
-    expect(post :create, params: valid_user_params).to redirect_to user_path(User.last)
+    expect(post(:create, params: valid_user_params)).to redirect_to user_path(User.last)
   end
 
   it "should not create user with invalid params" do
@@ -42,6 +42,6 @@ RSpec.describe UsersController, type: :controller do
   end
 
   it "redirects after failed creation" do
-    expect(post :create, params: invalid_user_params).to redirect_to root_path
+    expect(post(:create, params: invalid_user_params)).to redirect_to root_path
   end
 end
