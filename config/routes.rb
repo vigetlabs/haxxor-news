@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root "articles#index"
   resources :articles do
-    resources :comments, only: [:create]
+    resources :comments, only: [:create, :show]
   end
   resources :users, only: [:create, :show]
   get "/signup", to: "users#new"

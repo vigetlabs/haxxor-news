@@ -1,2 +1,23 @@
-<h1><%=@comment.user.name  %></h1>
+<h1>Comment by <%= link_to @comment.user.name, @comment.user %></h1>
 <p><%= @comment.text %></p>
+<p>Posted on <%= @comment.created_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+
+<h2>Replies</h2>
+<ul>
+  <% @comment.replies.each do |reply| %>
+    <li>
+      <%= reply.text %> - <%= link_to 'Posted', article_comment_path(reply.article, reply) %> by <%= link_to reply.user.name, reply.user %> on <%= reply.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+    </li>
+  <% end %>
+</ul>
+
+<h3>Write a Reply</h3>
+<%= form_with(model: [@comment.article, @reply], local: true) do |form| %>
+  <div class="field">
+    <%= form.text_area :text %>
+  </div>
+  <%= form.hidden_field :parent_id, value: @comment.id %>
+  <div class="actions">
+    <%= form.submit "Reply" %>
+  </div>
+<% end %>
