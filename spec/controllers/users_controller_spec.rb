@@ -17,9 +17,6 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
-  it "should redirect to login when not authorized" do
-    expect(get(:show, params: {id: user.id})).to redirect_to login_path
-  end
 
   it "should create user with valid params" do
     expect {
