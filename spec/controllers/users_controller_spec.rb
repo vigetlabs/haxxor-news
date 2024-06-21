@@ -17,7 +17,6 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
-
   it "should create user with valid params" do
     expect {
       post :create, params: valid_user_params
