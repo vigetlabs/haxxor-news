@@ -7,6 +7,10 @@ module CommentsHelper
         safe_concat link_to(comment.user.name, comment.user)
         safe_concat " on #{comment.created_at.strftime("%B %d, %Y at %I:%M %p")}"
       }
+      concat content_tag(:p) {
+        safe_concat link_to("reply", article_comment_path(comment.article, comment))
+      }
+
       if comment.replies.any?
         concat(content_tag(:ul) do
           comment.replies.each do |reply|
