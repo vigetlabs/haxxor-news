@@ -14,17 +14,7 @@
 <ul>
   <% @comments.each do |comment| %>
     <li>
-    <%= comment.text %> - <%= link_to 'Posted', article_comment_path(@article, comment) %> by <%= link_to comment.user.name, comment.user %> on <%= comment.created_at.strftime("%B %d, %Y at %I:%M %p") %>
-      
-      <% if comment.replies.any? %>
-        <ul>
-          <% comment.replies.each do |reply| %>
-            <li>
-              <%= reply.text %> - <%= link_to 'Posted', article_comment_path(@article, reply) %> by <%= link_to reply.user.name, reply.user %> on <%= reply.created_at.strftime("%B %d, %Y at %I:%M %p") %>
-            </li>
-          <% end %>
-        </ul>
-      <% end %>
+    <%= render_comment_tree(comment) %>
     </li>
   <% end %>
 </ul>

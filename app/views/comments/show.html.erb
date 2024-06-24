@@ -4,7 +4,9 @@
 
 <h2>Replies</h2>
 <ul>
-  <%= render_comment_tree(@comment) %>
+  <% @comment.replies.each do |reply| %>
+    <%= render_comment_tree(reply) %>
+  <% end %>
 </ul>
 
 <h3>Write a Reply</h3>
