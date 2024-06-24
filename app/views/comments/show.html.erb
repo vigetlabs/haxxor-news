@@ -4,11 +4,7 @@
 
 <h2>Replies</h2>
 <ul>
-  <% @comment.replies.each do |reply| %>
-    <li>
-      <%= reply.text %> - <%= link_to 'Posted', article_comment_path(reply.article, reply) %> by <%= link_to reply.user.name, reply.user %> on <%= reply.created_at.strftime("%B %d, %Y at %I:%M %p") %>
-    </li>
-  <% end %>
+  <%= render_comment_tree(@comment) %>
 </ul>
 
 <h3>Write a Reply</h3>
@@ -21,3 +17,4 @@
     <%= form.submit "Reply" %>
   </div>
 <% end %>
+
