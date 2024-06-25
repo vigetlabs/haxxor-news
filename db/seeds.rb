@@ -40,7 +40,7 @@ articles = Article.all
 end
 
 comments = Comment.all
-#Create replies to comments
+# Create replies to comments
 90.times do |i|
   comment = comments.sample
   Comment.create!(
