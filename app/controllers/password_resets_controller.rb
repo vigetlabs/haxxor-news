@@ -9,7 +9,7 @@ class PasswordResetsController < ApplicationController
       # Send email
       PasswordMailer.with(user: @user).reset.deliver_later
     end
-    redirect_to root_path, notice: "If an account with that email was found, we have senta  link to reset your password"
+    redirect_to root_path, notice: "If an account with that email was found, we have sent a link to reset your password"
   end
 
   def edit
