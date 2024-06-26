@@ -14,14 +14,14 @@ class ArticlesController < ApplicationController
   def upvote
     vote(1)
     respond_to do |format|
-      format.json { render json: { new_score: @article.score } }
+      format.json { render json: {new_score: @article.score} }
     end
   end
 
   def downvote
     vote(-1)
     respond_to do |format|
-      format.json { render json: { new_score: @article.score } }
+      format.json { render json: {new_score: @article.score} }
     end
   end
 
