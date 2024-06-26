@@ -2,6 +2,10 @@ Rails.application.routes.draw do
   root "articles#index"
   resources :articles do
     resources :comments, only: [:create, :show]
+    member do
+      post "upvote"
+      post "downvote"
+    end
   end
   resources :users, only: [:create, :show]
   get "/signup", to: "users#new"

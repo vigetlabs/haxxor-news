@@ -1,13 +1,23 @@
 class ArticlesController < ApplicationController
   before_action :authorized, only: [:new, :create]
+  before_action :set_article, only: [:show, :upvote, :downvote]
   def index
     @articles = Article.order(created_at: :desc).page(params[:page]).per(20)
   end
 
   def show
-    @article = Article.find(params[:id])
     @comments = @article.comments.without_parent.order(created_at: :desc)
     @comment = Comment.new
+  end
+
+  def upvote
+    vote(1)
+    redirect_to @article
+  end
+
+  def downvote
+    vote(-1)
+    redirect_to @article
   end
 
   def new
@@ -27,7 +37,20 @@ class ArticlesController < ApplicationController
 
   private
 
+  def set_article
+    @article = Article.find(params[:id])
+  end
+
   def article_params
     params.require(:article).permit(:title, :link)
+  end
+
+  def vote(value)
+    @vote = @article.votes.find_or_initialize_by(user: current_user)
+    if @vote.value == value
+      @vote.update(value: 0)
+    else
+      @vote.update(value: value)
+    end
   end
 end
