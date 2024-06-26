@@ -4,8 +4,8 @@ RSpec.describe Vote, type: :model do
   let(:user) { create(:user) }
   let(:article) { create(:article, user: user) }
   let(:comment) { create(:comment, article: article, user: user) }
-  let(:vote) {create(:vote, votable: article, user: user)}
-  let(:comment_vote) {create(:vote, votable: comment, user: user)}
+  let(:vote) { create(:vote, votable: article, user: user) }
+  let(:comment_vote) { create(:vote, votable: comment, user: user) }
 
   it "should be valid with valid attributes" do
     expect(vote.valid?).to be(true)

@@ -4,7 +4,15 @@
 <ul>
   <% @articles.each do |article| %>
     <li>
-    <%= link_to article.title, article.link %> - Posted by <%= link_to article.user.name, article.user %> on <%= article.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+    <div style="display: flex; align-items: center;>
+    <%= link_to article.title, article_path(article) %> - Score: <%= article.score %>
+    <% user_vote = @user_votes[article.id] %>
+    <%= button_to "Upvote", upvote_article_path(article), method: :post, 
+            class: "btn btn-sm #{'btn-success' if user_vote&.value == 1} btn-light"%>
+    <%= button_to "Downvote", downvote_article_path(article), method: :post, 
+            class: "btn btn-sm #{'btn-danger' if user_vote&.value == -1} btn-light"%>
+    </div>
+    - Posted by <%= link_to article.user.name, user_path(article.user) %> on <%= article.created_at.strftime("%B %d, %Y at %I:%M %p") %>
     <div>
       <%= link_to "comment", article %>
     </div>

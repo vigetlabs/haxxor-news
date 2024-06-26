@@ -3,6 +3,7 @@ class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :upvote, :downvote]
   def index
     @articles = Article.order(created_at: :desc).page(params[:page]).per(20)
+    @user_votes = Vote.where(user: current_user, votable: @articles.to_a).index_by(&:votable_id)
   end
 
   def show
@@ -12,12 +13,12 @@ class ArticlesController < ApplicationController
 
   def upvote
     vote(1)
-    redirect_to @article
+    redirect_to root_path
   end
 
   def downvote
     vote(-1)
-    redirect_to @article
+    redirect_to root_path
   end
 
   def new
