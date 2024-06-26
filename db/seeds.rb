@@ -50,3 +50,13 @@ comments = Comment.all
     parent_id: comment.id
   )
 end
+# Generate votes for articles
+articles.each do |article|
+  rand(1..5).times do  # Random number of votes per article
+    Vote.create!(
+      votable: article,
+      user: users.sample,
+      value: [-1, 0, 1].sample  # Randomly selects a vote value
+    )
+  end
+end
