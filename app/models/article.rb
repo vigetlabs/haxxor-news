@@ -8,6 +8,12 @@
 class Article < ApplicationRecord
   belongs_to :user
   has_many :comments
+  has_many :votes, as: :votable
+
   validates :title, presence: true
   validates :link, presence: true
+
+  def score
+    votes.sum(:value)
+  end
 end
