@@ -50,10 +50,9 @@ comments.each do |comment|
     user: users.sample,
     parent_id: comment.id
   )
-
 end
 
-#replies to replies
+# replies to replies
 replies.each do |reply|
   Comment.create!(
     text: "Sample Reply",
