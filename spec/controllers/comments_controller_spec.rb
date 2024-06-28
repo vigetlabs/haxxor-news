@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe CommentsController, type: :controller do
   let(:user) { create(:user) }
   let(:article) { create(:article, user: user) }
+  let(:comment) {create(:comment, user: user, article: article)}
   let(:parent_comment) { create(:comment, article: article, user: user) }
   let(:comment_params) { {text: "This is a test comment"} }
   let(:reply_params) { {text: "This is a test reply", parent_id: parent_comment.id} }
@@ -51,6 +52,39 @@ RSpec.describe CommentsController, type: :controller do
         Comment.count
       }
       expect(response.code).to eq("422")
+    end
+    describe "POST #upvote" do
+      it "sets vote value to 1 if user has not voted" do
+        expect {
+          post :upvote, params: {article_id: article.id, id: comment.id}
+        }.to change { comment.votes.count }.by(1)
+        expect(comment.reload.votes.last.value).to eq(1)
+      end
+
+      it "sets vote value to 0 if user has already upvoted" do
+        create(:vote, votable: comment, user: user, value: 1)
+        expect {
+          post :upvote, params: {article_id: article.id, id: comment.id}
+        }.not_to change { comment.votes.count }
+        expect(comment.reload.votes.last.value).to eq(0)
+      end
+    end
+
+    describe "POST #downvote" do
+      it "sets vote value to -1 if user has not already downvoted" do
+        expect {
+          post :downvote, params: {article_id: article.id, id: comment.id}, format: :json
+        }.to change { comment.votes.count }.by(1)
+        expect(comment.reload.votes.last.value).to eq(-1)
+      end
+
+      it "sets vote value to 0 if user has already downvoted" do
+        create(:vote, votable: comment, user: user, value: -1)
+        expect {
+          post :downvote, params: {article_id: article.id, id: comment.id}
+        }.not_to change { comment.votes.count }
+        expect(comment.reload.votes.last.value).to eq(0)
+      end
     end
   end
 end
