@@ -1,7 +1,13 @@
 <h1>Comment by <%= link_to @comment.user.name, @comment.user %></h1>
 <p><%= @comment.text %></p>
-<p>Posted on <%= @comment.created_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+<div style="display: flex; align-items: center;">
+  Posted on <%= @comment.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+  - Score: <span id="score-Comment-<%= @comment.id %>"><%= @comment.score %></span>
+  <% user_vote = @user_votes[@comment.id] %>
+          <%= button_to "Upvote", upvote_article_comment_path(@comment), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Comment', votable_id: @comment.id, article_id: @comment.article.id } %>
 
+          <%= button_to "Downvote", downvote_article_comment_path(@comment), method: :post, method: :post, class: "btn btn-sm downvote-button", data: { votable_type: 'Comment', votable_id: @comment.id, article_id: @comment.article.id } %>
+</div>
 <h2>Replies</h2>
 <ul>
   <% @comment.replies.each do |reply| %>
