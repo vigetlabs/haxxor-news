@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
   root "articles#index"
   resources :articles do
-    resources :comments, only: [:create, :show]
+    resources :comments, only: [:create, :show] do
+      member do
+        post "upvote"
+        post "downvote"
+      end
+    end
     member do
       post "upvote"
       post "downvote"
