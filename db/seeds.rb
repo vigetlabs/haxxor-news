@@ -41,21 +41,44 @@ articles = Article.all
 end
 
 comments = Comment.all
+replies = []
 # Create replies to comments
-90.times do |i|
-  comment = comments.sample
-  Comment.create!(
-    text: "Sample Reply #{i + 1}",
+comments.each do |comment|
+  replies << Comment.create!(
+    text: "Sample Reply",
     article: comment.article,
     user: users.sample,
     parent_id: comment.id
   )
+
 end
+
+#replies to replies
+replies.each do |reply|
+  Comment.create!(
+    text: "Sample Reply",
+    article: reply.article,
+    user: users.sample,
+    parent_id: reply.id
+  )
+end
+
 # Generate votes for articles
 articles.each do |article|
   users.each do |user|
     Vote.create!(
       votable: article,
+      user: user,
+      value: [-1, 0, 1].sample
+    )
+  end
+end
+comments = Comment.all
+# Generate votes for comments
+comments.each do |comment|
+  users.each do |user|
+    Vote.create!(
+      votable: comment,
       user: user,
       value: [-1, 0, 1].sample
     )
