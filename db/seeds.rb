@@ -1,3 +1,4 @@
+Vote.destroy_all
 Comment.destroy_all
 Article.destroy_all
 User.destroy_all
@@ -52,11 +53,11 @@ comments = Comment.all
 end
 # Generate votes for articles
 articles.each do |article|
-  rand(1..5).times do  # Random number of votes per article
+  users.each do |user|
     Vote.create!(
       votable: article,
-      user: users.sample,
-      value: [-1, 0, 1].sample  # Randomly selects a vote value
+      user: user,
+      value: [-1, 0, 1].sample
     )
   end
 end
