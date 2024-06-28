@@ -46,6 +46,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_175659) do
     t.integer "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "votable_id", "votable_type"], name: "index_votes_on_user_and_votable", unique: true
     t.index ["user_id"], name: "index_votes_on_user_id"
     t.index ["votable_type", "votable_id"], name: "index_votes_on_votable"
   end
