@@ -6,11 +6,11 @@
     <li>
       <div style="display: flex; align-items: center;">
         <%= link_to article.title, article.link, target: "_blank" %>
-        - Score: <span id="score-<%= article.id %>"><%= article.score %></span>
+        - Score: <span id="score-Article-<%= article.id %>"><%= article.score %></span>
         <% user_vote = @user_votes[article.id] %>
-        <%= button_to "Upvote", upvote_article_path(article), method: :post, class: "btn btn-sm upvote-button", data: { article_id: article.id } %>
+        <%= button_to "Upvote", upvote_article_path(article), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Article', votable_id: article.id } %>
 
-        <%= button_to "Downvote", downvote_article_path(article), method: :post, method: :post, class: "btn btn-sm downvote-button", data: { article_id: article.id } %>
+        <%= button_to "Downvote", downvote_article_path(article), method: :post, method: :post, class: "btn btn-sm downvote-button", data: { votable_type: 'Article', votable_id: article.id } %>
       </div>
         - Posted by <%= link_to article.user.name, user_path(article.user) %> on <%= article.created_at.strftime("%B %d, %Y at %I:%M %p") %>
       <div>

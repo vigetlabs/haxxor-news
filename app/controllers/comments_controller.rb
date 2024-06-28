@@ -2,19 +2,23 @@ class CommentsController < ApplicationController
   before_action :authorized, only: [:create]
 
   def show
+    comment
     @reply = Comment.new
     @user_votes = Vote.where(user: current_user, votable: @comments.to_a).index_by(&:votable_id)
-
   end
 
   def upvote
     vote(1)
-    redirect_to article_comment_path(comment)
+    respond_to do |format|
+      format.json { render json: {new_score: comment.score} }
+    end
   end
 
   def downvote
     vote(-1)
-    redirect_to article_comment_path(comment)
+    respond_to do |format|
+      format.json { render json: {new_score: comment.score} }
+    end
   end
 
   def create
@@ -31,7 +35,6 @@ class CommentsController < ApplicationController
       render "articles/show", status: :unprocessable_entity
     end
   end
-  
 
   private
 
