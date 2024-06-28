@@ -5,7 +5,7 @@ module CommentsHelper
       concat content_tag(:div, style: "display: flex; align-items: center;") {
         safe_concat "Posted by "
         safe_concat link_to(comment.user.name, comment.user)
-        safe_concat " on #{comment.created_at.strftime("%B %d, %Y at %I:%M %p")}"
+        safe_concat "  on #{comment.created_at.strftime("%B %d, %Y at %I:%M %p")}"
         safe_concat " - Score: "
         safe_concat content_tag(:span, comment.score, id: "score-Comment-#{comment.id}")
 
