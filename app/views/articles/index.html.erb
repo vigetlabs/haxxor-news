@@ -1,88 +1,49 @@
-<head>
-  <title>Haxxor News</title>
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
+<!-- app/views/articles/index.html.erb -->
 
-  <%= stylesheet_link_tag 'application', media: 'all' %>
-  <%= javascript_include_tag 'application' %>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-
-
-<body>
-  <center>
-    <table border="0" cellpadding="0" cellspacing="0" width="85%" style="padding:2px" bgcolor="#f6f6ef">
+<tr style="height:10px"></tr>
+<tr>
+  <td>
+    <table border="0" cellpadding="0" cellspacing="0">
       <tbody>
-        <tr>
-          <td bgcolor="#ff6600">
-            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:2px">
-              <tbody>
-                <tr>
-                  <td style="line-height:12pt; height:10px;">
-                    <b>
-                      <%= link_to 'Haxxor News', root_path %>
-                    </b>
-                    <%= link_to 'new', new_article_path %>
-                  </td>
-                  <td style="text-align:right; padding-right:4px;">
-                    <div style="display: flex; justify-content: flex-end; gap: 5px;">
-                      <% if logged_in? %>
-                        <%= link_to current_user.name, user_path(current_user) %>
-                        <%= button_to "logout", logout_path, method: :delete %>
-                      <% else %>
-                        <%= link_to "Login", login_path, method: :get %>
-                        <%= link_to "Sign Up", signup_path, method: :get %>
-                      <% end %>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-        <tr style="height:10px"></tr>
         <% @articles.each_with_index do |article, index| %>
           <tr>
-            <td>
-              <table border="0" cellpadding="0" cellspacing="0">
-                <tbody>
-                  <tr>
-                    <td align="right" >
-                      <span class="rank"><%= index + 1 %>.</span>
-                    </td>
-                    <td align="right" valign="top" class="votelinks">
-                      <center>
-                        <%= button_to upvote_article_path(article), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Article', votable_id: article.id } do %>
-                          <i class="fas fa-arrow-up"></i>
-                        <% end %>
-                        
-                        <%= button_to downvote_article_path(article), method: :post, class: "btn btn-sm downvote-button", data: { votable_type: 'Article', votable_id: article.id } do %>
-                          <i class="fas fa-arrow-down"></i>
-                        <% end %>
-                      </center>
-                    </td>
-                    <td class="title">
-                      <%= link_to article.title, article.link, target: "_blank" %>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2"></td>
-                    <td class="subtext">
-                      <span id="score-Article-<%= article.id %>" class="score"><%= article.score %> points</span>
-                      by <%= link_to article.user.name, user_path(article.user) %>
-                      <span class="age"><%= time_ago_in_words(article.created_at) %> ago</span>
-                    </td>
-                  </tr>
-                  <tr style="height:5px"></tr>
-                </tbody>
-              </table>
+            <td align="right">
+              <span class="rank"><%= index + 1 %>.</span>
+            </td>
+            <td valign="top" class="votelinks">
+              <center>
+                <%= button_to upvote_article_path(article), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Article', votable_id: article.id } do %>
+                  <i class="fas fa-arrow-up"></i>
+                <% end %>
+                <%= button_to downvote_article_path(article), method: :post, class: "btn btn-sm downvote-button", data: { votable_type: 'Article', votable_id: article.id } do %>
+                  <i class="fas fa-arrow-down"></i>
+                <% end %>
+              </center>
+            </td>
+            <td class="title">
+              <%= link_to article.title, article.link, target: "_blank" %>
             </td>
           </tr>
+          <tr>
+            <td colspan="2"></td>
+            <td class="subtext">
+              <span id="score-Article-<%= article.id %>" class="score"><%= article.score %> points</span>
+              by <%= link_to article.user.name, user_path(article.user) %>
+              <span class="age"><%= time_ago_in_words(article.created_at) %> ago</span>
+              |
+              <span class="comments-count"><%= link_to "#{article.comments.count} comments", article %></span>
+            </td>
+          </tr>
+          <tr style="height:5px"></tr>
         <% end %>
       </tbody>
     </table>
+  </td>
+</tr>
+<tr>
+  <td>
     <div style="padding-top: 10px;">
       <%= paginate @articles %>
     </div>
-  </center>
-</body>
+  </td>
+</tr>
