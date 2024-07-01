@@ -26,7 +26,4 @@ module CommentsHelper
     end
   end
 
-  def comment
-    @comment ||= Comment.find(params[:id])
-  end
 end

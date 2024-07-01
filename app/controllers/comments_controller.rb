@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   before_action :authorized, only: [:create]
+  helper_method :comment
 
   def show
     @reply = Comment.new
@@ -39,6 +40,10 @@ class CommentsController < ApplicationController
 
   def article
     @article ||= Article.find(params[:article_id])
+  end
+
+  def comment
+    @comment ||= Comment.find(params[:id])
   end
 
   def comment_params
