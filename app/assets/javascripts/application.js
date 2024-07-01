@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
     .then(response => response.json())
     .then(data => {
-      document.getElementById(`score-${votableType}-${votableId}`).textContent = data.new_score;
+      document.getElementById(`score-${votableType}-${votableId}`).textContent = `${data.new_score} points`;
     })
     .catch(error => console.log('Error:', error));
   }
