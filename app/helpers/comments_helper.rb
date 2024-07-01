@@ -25,5 +25,4 @@ module CommentsHelper
       end
     end
   end
-
 end
