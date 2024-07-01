@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
     unless logged_in?
       respond_to do |format|
         format.html { redirect_to login_path, alert: "You must be logged in to perform that action." }
-        format.json { render json: { error: "Unauthorized" }, status: :unauthorized }
+        format.json { render json: {error: "Unauthorized"}, status: :unauthorized }
       end
     end
   end
