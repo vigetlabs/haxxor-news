@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :authorized, only: [:new, :create]
+  before_action :authorized, only: [:new, :create, :upvote, :downvote]
 
   def index
     @articles = Article.order(created_at: :desc).page(params[:page]).per(20)
