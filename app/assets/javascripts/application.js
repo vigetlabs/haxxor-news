@@ -1,3 +1,5 @@
+//= require rails-ujs
+//= require_tree .
 document.addEventListener("DOMContentLoaded", function() {
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   const upvoteButtons = document.querySelectorAll('.upvote-button');
