@@ -17,7 +17,12 @@ class ApplicationController < ActionController::Base
   end
 
   def authorized
-    redirect_to login_path unless logged_in?
+    unless logged_in?
+      respond_to do |format|
+        format.html { redirect_to login_path, alert: "You must be logged in to perform that action." }
+        format.json { render json: { error: "Unauthorized" }, status: :unauthorized }
+      end
+    end
   end
 
   def home?

@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function() {
   const upvoteButtons = document.querySelectorAll('.upvote-button');
   const downvoteButtons = document.querySelectorAll('.downvote-button');
 
-  // Function to handle voting
   function handleVote(votableId, votableType, path, articleId = null) {
     let url;
     if (votableType === 'Article') {
@@ -21,9 +20,17 @@ document.addEventListener("DOMContentLoaded", function() {
       },
       body: JSON.stringify({})
     })
-    .then(response => response.json())
+    .then(response => {
+      if (response.redirected) {
+        window.location.href = response.url;
+      } else {
+        return response.json();
+      }
+    })
     .then(data => {
-      document.getElementById(`score-${votableType}-${votableId}`).textContent = `${data.new_score} points`;
+      if (data) {
+        document.getElementById(`score-${votableType}-${votableId}`).textContent = `${data.new_score} points`;
+      }
     })
     .catch(error => console.log('Error:', error));
   }
@@ -34,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const votableId = this.dataset.votableId;
       const votableType = this.dataset.votableType;
       const articleId = this.dataset.articleId;
-      handleVote(votableId, votableType, 'upvote');
+      handleVote(votableId, votableType, 'upvote', articleId);
     });
   });
 
@@ -48,4 +55,5 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 });
+
 
