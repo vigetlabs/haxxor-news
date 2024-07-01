@@ -53,6 +53,7 @@ RSpec.describe CommentsController, type: :controller do
       }
       expect(response.code).to eq("422")
     end
+
     describe "POST #upvote" do
       it "sets vote value to 1 if user has not voted" do
         expect {

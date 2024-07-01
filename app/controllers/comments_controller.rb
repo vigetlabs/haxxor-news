@@ -2,7 +2,6 @@ class CommentsController < ApplicationController
   before_action :authorized, only: [:create]
 
   def show
-    comment
     @reply = Comment.new
     @user_votes = Vote.where(user: current_user, votable: @comments.to_a).index_by(&:votable_id)
   end
@@ -27,7 +26,7 @@ class CommentsController < ApplicationController
 
     if comment.save
       if comment.parent_id.present?
-        redirect_to article_comment_path(article, @comment.parent_id)
+        redirect_to article_comment_path(article, comment.parent_id)
       else
         redirect_to article
       end
@@ -40,10 +39,6 @@ class CommentsController < ApplicationController
 
   def article
     @article ||= Article.find(params[:article_id])
-  end
-
-  def comment
-    @comment ||= Comment.find(params[:id])
   end
 
   def comment_params
