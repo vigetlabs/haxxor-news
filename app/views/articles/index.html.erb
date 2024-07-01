@@ -1,23 +1,75 @@
-<h1>Articles</h1>
-<%= link_to 'Add an article', new_article_path, class: 'btn btn-primary' %>
-
-<ul>
-  <% @articles.each do |article| %>
-    <li>
-      <div style="display: flex; align-items: center;">
-        <%= link_to article.title, article.link, target: "_blank" %>
-        - Score: <span id="score-Article-<%= article.id %>"><%= article.score %></span>
-        <% user_vote = @user_votes[article.id] %>
-        <%= button_to "Upvote", upvote_article_path(article), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Article', votable_id: article.id } %>
-
-        <%= button_to "Downvote", downvote_article_path(article), method: :post, method: :post, class: "btn btn-sm downvote-button", data: { votable_type: 'Article', votable_id: article.id } %>
-      </div>
-        - Posted by <%= link_to article.user.name, user_path(article.user) %> on <%= article.created_at.strftime("%B %d, %Y at %I:%M %p") %>
-      <div>
-        <%= link_to "comment", article %>
-      </div>
-    </li>
-  <% end %>
-</ul>
-
-<%= paginate @articles %>
+<head>
+  <title>Articles | Haxxor News</title>
+</head>
+<body>
+  <center>
+    <table border="0" cellpadding="0" cellspacing="0" width="85%" style="padding:2px" bgcolor="#f6f6ef">
+      <tbody>
+        <tr>
+          <td bgcolor="#ff6600">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:2px">
+              <tbody>
+                <tr>
+                  <td style="line-height:12pt; height:10px;">
+                    <b>
+                      <%= link_to 'Haxxor News', root_path %>
+                    </b>
+                    <%= link_to 'new', new_article_path %>
+                  </td>
+                  <td style="text-align:right; padding-right:4px;">
+                    <div style="display: flex; justify-content: flex-end; gap: 5px;">
+                      <% if logged_in? %>
+                        <%= link_to current_user.name, user_path(current_user) %>
+                        <%= button_to "logout", logout_path, method: :delete %>
+                      <% else %>
+                        <%= link_to "Login", login_path, method: :get %>
+                        <%= link_to "Sign Up", signup_path, method: :get %>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr style="height:10px"></tr>
+        <% @articles.each do |article| %>
+          <tr>
+            <td>
+              <table border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                  <tr>
+                    <td align="right" valign="top" class="title">
+                      <span class="rank"><%= article.score %></span>
+                    </td>
+                    <td valign="top" class="votelinks">
+                      <center>
+                        <%= button_to "Upvote", upvote_article_path(article), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Article', votable_id: article.id } %>
+                        <%= button_to "Downvote", downvote_article_path(article), method: :post, class: "btn btn-sm downvote-button", data: { votable_type: 'Article', votable_id: article.id } %>
+                      </center>
+                    </td>
+                    <td class="title">
+                      <%= link_to article.title, article.link, target: "_blank" %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2"></td>
+                    <td class="subtext">
+                      <span id="score-Article-<%= article.id %>" class="score"><%= article.score %> points</span>
+                      by <%= link_to article.user.name, user_path(article.user) %>
+                      <span class="age"><%= time_ago_in_words(article.created_at) %> ago</span>
+                    </td>
+                  </tr>
+                  <tr style="height:5px"></tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div style="padding-top: 10px;">
+      <%= paginate @articles %>
+    </div>
+  </center>
+</body>
