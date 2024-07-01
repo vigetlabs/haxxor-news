@@ -3,29 +3,54 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 
   <head>
-    <title>HaxxorNewsClone</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Haxxor News</title>
     <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+  <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   </head>
-
-  <body>
-    <%= yield %>
-
-    <div>
-      <% unless home? %>
-        <%= button_to "Home", root_path, method: :get %>
-      <% end %>
-      <% if logged_in? %>
-        <p>Logged in as <%= link_to current_user.name, user_path(current_user) %></p>
-        <%= button_to "Logout", logout_path, method: :delete %>
-      <% else %>
-        <%= button_to "Login", login_path, method: :get %>
-        <%= button_to "Sign Up", signup_path, method: :get %>
-      <% end %>
-    
-    </div>
-  </body>
+<body>
+  <center>
+    <table border="0" cellpadding="0" cellspacing="0" width="85%" style="padding:2px" bgcolor="#f6f6ef">
+      <tbody>
+        <tr>
+          <td bgcolor="#ff6600">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:2px">
+              <tbody>
+                <tr>
+                  <td style="line-height:12pt; height:10px;">
+                  <span class="pagetop">
+                    <b class="hnname">
+                      <%= link_to 'Haxxor News', root_path %>
+                    </b>
+                    <%= link_to 'new', new_article_path %>
+                  </td>
+                  </span>
+                  <td style="text-align:right; padding-right:4px;">
+                    <div style="display: flex; justify-content: flex-end; gap: 5px;">
+                      <span class="pagetop">
+                        <% if logged_in? %>
+                          <%= link_to current_user.name, user_path(current_user), class: "user-link" %>
+                          |
+                          <%= link_to "logout", logout_path, method: :delete, class: "logout-link" %>
+                        <% else %>
+                          <%= link_to "login", login_path, method: :get %>
+                          |
+                          <%= link_to "signup", signup_path, method: :get %>
+                        <% end %>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+          <%=yield%>
+        </tbody>
+    </table>
+  </center>
+</body>
 </html>

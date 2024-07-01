@@ -1,5 +1,5 @@
 class Comment < ApplicationRecord
-  belongs_to :article
+  belongs_to :article, counter_cache: true
   belongs_to :user
   validates :text, presence: true
   has_many :votes, as: :votable, dependent: :destroy
