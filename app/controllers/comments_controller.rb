@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_action :authorized, only: [:create]
+  before_action :authorized, only: [:create, :upvote, :downvote]
   helper_method :comment
 
   def show
