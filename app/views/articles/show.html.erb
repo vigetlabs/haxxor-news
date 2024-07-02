@@ -1,18 +1,57 @@
-<h1><%= @article.title %></h1>
-<p><%= link_to @article.link, @article.link %></p>
-
-<%= form_with(model: [@article, @comment], local: true) do |form| %>
-  <div class="field">
-    <%= form.text_area :text %>
-  </div>
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
-
-<h2>Comments</h2>
-<ul>
-  <% @comments.each do |comment| %>
-    <%= render_comment_tree(comment) %>
-  <% end %>
-</ul>
+<tr style="height:10px"></tr>
+<tr>
+  <td>
+    <table border="0" cellpadding="0" cellspacing="0">
+      <tbody>
+        <tr>
+          <td align="right">
+            <span class="rank">1.</span>
+          </td>
+          <td valign="top" class="votelinks">
+            <center>
+              <%= button_to upvote_article_path(@article), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Article', votable_id: @article.id } do %>
+                <i class="fas fa-arrow-up"></i>
+              <% end %>
+              <%= button_to downvote_article_path(@article), method: :post, class: "btn btn-sm downvote-button", data: { votable_type: 'Article', votable_id: @article.id } do %>
+                <i class="fas fa-arrow-down"></i>
+              <% end %>
+            </center>
+          </td>
+          <td class="title">
+            <%= link_to @article.title, @article.link, target: "_blank" %>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2"></td>
+          <td class="subtext">
+            <span id="score-Article-<%= @article.id %>" class="score"><%= @article.score %> points</span>
+            by <%= link_to @article.user.name, user_path(@article.user) %>
+            <span class="age"><%= time_ago_in_words(@article.created_at) %> ago</span>
+          </td>
+        </tr>
+        <tr style="height:10px"></tr>
+        <tr>
+          <td colspan="3">
+            <%= form_with(model: [@article, @comment], local: true) do |form| %>
+              <div class="field">
+                <%= form.text_area :text %>
+              </div>
+              <div class="actions">
+                <%= form.submit %>
+              </div>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <ul style="list-style-type: none; padding-left: 0;">
+              <% @comments.each do |comment| %>
+                <%= render_comment_tree(comment) %>
+              <% end %>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </td>
+</tr>
