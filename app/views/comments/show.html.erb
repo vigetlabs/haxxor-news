@@ -1,27 +1,45 @@
-<h1>Comment by <%= link_to comment.user.name, comment.user %></h1>
-<p><%= comment.text %></p>
-<div style="display: flex; align-items: center;">
-  Posted on <%= comment.created_at.strftime("%B %d, %Y at %I:%M %p") %>
-  - Score: <span id="score-Comment-<%= comment.id %>"><%= comment.score %></span>
-  <% user_vote = @user_votes[comment.id] %>
-    <%= button_to "Upvote", upvote_article_comment_path(comment), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Comment', votable_id: comment.id, article_id: comment.article.id } %>
-    <%= button_to "Downvote", downvote_article_comment_path(comment), method: :post, method: :post, class: "btn btn-sm downvote-button", data: { votable_type: 'Comment', votable_id: comment.id, article_id: comment.article.id } %>
-</div>
-<h2>Replies</h2>
-<ul>
-  <% comment.replies.each do |reply| %>
-    <%= render_comment_tree(reply) %>
-  <% end %>
-</ul>
-
-<h3>Write a Reply</h3>
-<%= form_with(model: [comment.article, @reply], local: true) do |form| %>
-  <div class="field">
-    <%= form.text_area :text %>
-  </div>
-  <%= form.hidden_field :parent_id, value: comment.id %>
-  <div class="actions">
-    <%= form.submit "Reply" %>
-  </div>
-<% end %>
-
+<tr style="height:10px"></tr>
+<tr>
+  <td>
+    <table border="0" cellpadding="0" cellspacing="0">
+      <tbody>
+        <tr>  
+          <td align="right">
+            <span class="rank"><%= 1 %>.</span>
+          </td>  
+          <td valign="top" class="votelinks">
+            <center>
+              <%= button_to upvote_article_comment_path(comment), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Comment', votable_id: comment.id, article_id: comment.article.id } do %>
+                <i class="fas fa-arrow-up"></i>
+              <% end %>
+              <%= button_to downvote_article_comment_path(comment), method: :post, class: "btn btn-sm downvote-button", data: { votable_type: 'Comment', votable_id: comment.id, article_id: comment.article.id } do %>
+                <i class="fas fa-arrow-down"></i>
+              <% end %>
+            </center>
+          </td>
+          <td valign="top" style="padding-left: 10px;">
+            <%= comment.text %>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2"></td>
+          <td class="subtext">
+            <span id="score-Comment-<%= comment.id %>"><%= comment.score %> points</span>
+            by <%= link_to comment.user.name, user_path(comment.user) %>
+            <span class="age"><%= time_ago_in_words(comment.created_at) %> ago</span>
+          </td>
+        </tr>
+        <tr style="height:5px"></tr>
+      </tbody>
+    </table>
+    <%= form_with(model: [comment.article, @reply], local: true) do |form| %>
+      <div class="field">
+        <%= form.text_area :text %>
+      </div>
+      <%= form.hidden_field :parent_id, value: comment.id %>
+      <div class="actions">
+        <%= form.submit "Reply" %>
+      </div>
+    <% end %>
+  </td>
+</tr>
