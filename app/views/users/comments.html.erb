@@ -5,37 +5,36 @@
       <tbody>
         <% current_page = params[:page].present? ? params[:page].to_i : 1 %>
         <% @comments.each_with_index do |comment, index| %>
-          <tbody>
-              <tr>  
-                <td align="right">
-                  <span class="rank"><%= (current_page-1) * 20 + index + 1 %>.</span>
-                </td>  
-                <td valign="top" class="votelinks">
-                  <center>
-                    <%= button_to upvote_article_comment_path(comment), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Comment', votable_id: comment.id, article_id: comment.article.id } do %>
-                      <i class="fas fa-arrow-up"></i>
-                    <% end %>
-                    <%= button_to downvote_article_comment_path(comment), method: :post, class: "btn btn-sm downvote-button", data: { votable_type: 'Comment', votable_id: comment.id, article_id: comment.article.id } do %>
-                      <i class="fas fa-arrow-down"></i>
-                    <% end %>
-                  </center>
-                </td>
-                <td valign="top">
-                  <%= comment.text %>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2"></td>
-                <td class="subtext">
-                  <span id="score-Comment-<%= comment.id %>"><%= comment.score %> points</span>
-                  by <%= link_to comment.user.name, user_path(comment.user) %>
-                  <span class="age"><%= time_ago_in_words(comment.created_at) %> ago</span>
-                   | 
-                  <%= link_to(" reply", article_comment_path(comment.article, comment))%>
-                </td>
-              </tr>
-              <tr style="height:5px"></tr>
-            
+          <tr>  
+            <td align="right">
+              <span class="rank"><%= (current_page-1) * 20 + index + 1 %>.</span>
+            </td>  
+            <td valign="top" class="votelinks">
+              <center>
+                <%= button_to upvote_article_comment_path(comment), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Comment', votable_id: comment.id, article_id: comment.article.id } do %>
+                  <i class="fas fa-arrow-up"></i>
+                <% end %>
+                <%= button_to downvote_article_comment_path(comment), method: :post, class: "btn btn-sm downvote-button", data: { votable_type: 'Comment', votable_id: comment.id, article_id: comment.article.id } do %>
+                  <i class="fas fa-arrow-down"></i>
+                <% end %>
+              </center>
+            </td>
+            <td valign="top">
+              <%= comment.text %>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2"></td>
+            <td class="subtext">
+              <span id="score-Comment-<%= comment.id %>"><%= comment.score %> points</span>
+              by <%= link_to comment.user.name, user_path(comment.user) %>
+              <span class="age"><%= time_ago_in_words(comment.created_at) %> ago</span>
+                | 
+              <%= link_to(" reply", article_comment_path(comment.article, comment))%>
+            </td>
+          </tr>
+          <tr style="height:5px"></tr>
+        
         <% end %>
       </tbody>
     </table>

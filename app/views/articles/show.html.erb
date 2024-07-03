@@ -9,24 +9,24 @@
           </td>
           <td valign="top" class="votelinks">
             <center>
-              <%= button_to upvote_article_path(@article), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Article', votable_id: @article.id } do %>
+              <%= button_to upvote_article_path(article), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Article', votable_id: article.id } do %>
                 <i class="fas fa-arrow-up"></i>
               <% end %>
-              <%= button_to downvote_article_path(@article), method: :post, class: "btn btn-sm downvote-button", data: { votable_type: 'Article', votable_id: @article.id } do %>
+              <%= button_to downvote_article_path(article), method: :post, class: "btn btn-sm downvote-button", data: { votable_type: 'Article', votable_id: article.id } do %>
                 <i class="fas fa-arrow-down"></i>
               <% end %>
             </center>
           </td>
           <td class="title">
-            <%= link_to @article.title, @article.link, target: "_blank" %>
+            <%= link_to article.title, article.link, target: "_blank" %>
           </td>
         </tr>
         <tr>
           <td colspan="2"></td>
           <td class="subtext">
-            <span id="score-Article-<%= @article.id %>" class="score"><%= @article.score %> points</span>
-            by <%= link_to @article.user.name, user_path(@article.user) %>
-            <span class="age"><%= time_ago_in_words(@article.created_at) %> ago</span>
+            <span id="score-Article-<%= article.id %>" class="score"><%= article.score %> points</span>
+            by <%= link_to article.user.name, user_path(article.user) %>
+            <span class="age"><%= time_ago_in_words(article.created_at) %> ago</span>
           </td>
         </tr>
         <tr style="height:10px"></tr>
