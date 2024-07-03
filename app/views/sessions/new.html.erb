@@ -1,8 +1,37 @@
-<%= form_tag login_path do %>
-    <%= label_tag "Username" %>
-    <%= text_field_tag :name, nil, placeholder: "Username" %>
-    <%= label_tag "Password" %>
-    <%= password_field_tag :password, nil, placeholder: "Password" %>
-    <%= submit_tag "Log In"%>
-    <%= link_to "Forgot your password?", password_reset_path%>
-<% end %>
+<tr style="height:10px"></tr>
+<tr>
+  <td>
+    <%= form_tag login_path do %>
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tbody>
+          <tr>
+            <td>
+              <%= label_tag "Username" %>
+            </td>
+            <td>
+              <%= text_field_tag :name, nil, placeholder: "Username" %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <%= label_tag "Password" %>
+            </td>
+            <td>
+              <%= password_field_tag :password, nil, placeholder: "Password" %>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <%= submit_tag "Log In"%>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <%= link_to "Forgot your password?", password_reset_path %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <% end %>
+  </td>
+</tr>
