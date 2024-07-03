@@ -18,7 +18,7 @@ class UsersController < ApplicationController
   end
 
   def articles
-    @articles = user.articles.order(created_at: :desc)
+    @articles = user.articles.order(created_at: :desc).page(params[:page]).per(20)
   end
 
   def comments
