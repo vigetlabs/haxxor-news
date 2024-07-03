@@ -30,6 +30,8 @@
                   <span id="score-Comment-<%= comment.id %>"><%= comment.score %> points</span>
                   by <%= link_to comment.user.name, user_path(comment.user) %>
                   <span class="age"><%= time_ago_in_words(comment.created_at) %> ago</span>
+                   | 
+                  <%= link_to(" reply", article_comment_path(comment.article, comment))%>
                 </td>
               </tr>
               <tr style="height:5px"></tr>
