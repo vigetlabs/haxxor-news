@@ -45,7 +45,7 @@ replies = []
 # Create replies to comments
 comments.each_with_index do |comment, i|
   replies << Comment.create!(
-    text: "Sample Reply #{i+1}",
+    text: "Sample Reply #{i + 1}",
     article: comment.article,
     user: users.sample,
     parent_id: comment.id
@@ -55,7 +55,7 @@ end
 # replies to replies
 replies.each_with_index do |reply, i|
   Comment.create!(
-    text: "Sample Reply to Reply #{i+1}",
+    text: "Sample Reply to Reply #{i + 1}",
     article: reply.article,
     user: users.sample,
     parent_id: reply.id
