@@ -3,10 +3,11 @@
   <td>
     <table border="0" cellpadding="0" cellspacing="0">
       <tbody>
+        <% current_page = params[:page].present? ? params[:page].to_i : 1 %>
         <% @articles.each_with_index do |article, index| %>
           <tr>
             <td align="right">
-              <span class="rank"><%= index + 1 %>.</span>
+              <span class="rank"><%= (current_page-1) * 20 + index + 1 %>.</span>
             </td>
             <td valign="top" class="votelinks">
               <center>
