@@ -1,8 +1,49 @@
-<h1><%= user.name %></h1>
-<%= link_to "articles", show_article_url%>
-<%= link_to "comments", show_comment_url%>
-<% if user == current_user %>
-    <p>Email: <%= user.email %></p>
-    <%= button_to "Change Email", edit_email_user_path(user), method: :get %>
-    <%= button_to "Change Password", edit_password_user_path(user), method: :get %>
-<% end %>
+<tr style="height:10px"></tr>
+<tr>
+  <td>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          <td>
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tbody>
+                <tr>
+                  <td>
+                    <b>User:</b> <%= user.name %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Created:</b> <%= user.created_at.strftime("%B %d, %Y") %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <%= link_to "Articles", show_article_url %> | 
+                    <%= link_to "Comments", show_comment_url %> 
+                  </td>
+                </tr>
+                <% if user == current_user %>
+                <tr>
+                  <td>
+                    <b>Email:</b> <%= user.email %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <%= link_to "Change Email", edit_email_user_path(user), method: :get %> | 
+                    <%= link_to "Change Password", edit_password_user_path(user), method: :get %>
+                  </td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </td>
+</tr>
+<tr style="height:10px"></tr>
+
+
