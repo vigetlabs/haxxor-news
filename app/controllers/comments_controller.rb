@@ -26,11 +26,7 @@ class CommentsController < ApplicationController
     comment.user = current_user
 
     if comment.save
-      if comment.parent_id.present?
-        redirect_to article_comment_path(article, comment.parent_id)
-      else
-        redirect_to article
-      end
+      redirect_to article
     else
       render "articles/show", status: :unprocessable_entity
     end
