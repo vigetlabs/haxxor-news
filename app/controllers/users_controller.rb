@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   end
 
   def comments
-    @comments = user.comments.order(created_at: :desc)
+    @comments = user.comments.order(created_at: :desc).page(params[:page]).per(20)
   end
 
   def edit_email
