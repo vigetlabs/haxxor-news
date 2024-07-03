@@ -6,18 +6,18 @@ module CommentsHelper
           concat content_tag(:tr) {
             concat content_tag(:td, valign: "top", class: "votelinks") {
               content_tag(:center) {
-                concat button_to(upvote_article_comment_path(comment), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Comment', votable_id: comment.id, article_id: comment.article.id }) {
-                  content_tag(:i, '', class: "fas fa-arrow-up")
+                concat button_to(upvote_article_comment_path(comment), method: :post, class: "btn btn-sm upvote-button", data: {votable_type: "Comment", votable_id: comment.id, article_id: comment.article.id}) {
+                  content_tag(:i, "", class: "fas fa-arrow-up")
                 }
-                concat button_to(downvote_article_comment_path(comment), method: :post, class: "btn btn-sm downvote-button", data: { votable_type: 'Comment', votable_id: comment.id, article_id: comment.article.id }) {
-                  content_tag(:i, '', class: "fas fa-arrow-down")
+                concat button_to(downvote_article_comment_path(comment), method: :post, class: "btn btn-sm downvote-button", data: {votable_type: "Comment", votable_id: comment.id, article_id: comment.article.id}) {
+                  content_tag(:i, "", class: "fas fa-arrow-down")
                 }
               }
             }
             concat content_tag(:td, comment.text, valign: "top", style: "padding-left: 10px;")
           }
           concat content_tag(:tr) {
-            concat content_tag(:td, '', colspan: "2")
+            concat content_tag(:td, "", colspan: "2")
             concat content_tag(:td, class: "subtext") {
               safe_concat content_tag(:span, "#{comment.score} points", id: "score-Comment-#{comment.id}", class: "score")
               concat raw("&nbsp;")
@@ -30,7 +30,7 @@ module CommentsHelper
               safe_concat link_to(" reply", article_comment_path(comment.article, comment))
             }
           }
-          concat content_tag(:tr, '', style: "height:5px")
+          concat content_tag(:tr, "", style: "height:5px")
         }
       }
       if comment.replies.any?
@@ -43,4 +43,3 @@ module CommentsHelper
     end
   end
 end
-
