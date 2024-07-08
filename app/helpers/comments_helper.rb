@@ -30,7 +30,7 @@ module CommentsHelper
               safe_concat link_to(" reply", article_comment_path(comment.article, comment))
             }
           }
-          concat content_tag(:tr, "", class:"post-subtext")
+          concat content_tag(:tr, "", class: "post-subtext")
         }
       }
       if comment.replies.any?
