@@ -1,13 +1,10 @@
-<tr style="height:10px"></tr>
+<tr class="header-space"></tr>
 <tr>
   <td>
-    <table border="0" cellpadding="0" cellspacing="0">
+    <table class="page-table">
       <tbody>
         <tr>
-          <td align="right">
-            <span class="rank">1.</span>
-          </td>
-          <td valign="top" class="votelinks">
+          <td>
             <center>
               <%= button_to upvote_article_path(article), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Article', votable_id: article.id } do %>
                 <i class="fas fa-arrow-up"></i>
@@ -22,14 +19,14 @@
           </td>
         </tr>
         <tr>
-          <td colspan="2"></td>
+          <td colspan="1"></td>
           <td class="subtext">
             <span id="score-Article-<%= article.id %>" class="score"><%= article.score %> points</span>
             by <%= link_to article.user.name, user_path(article.user) %>
             <span class="age"><%= time_ago_in_words(article.created_at) %> ago</span>
           </td>
         </tr>
-        <tr style="height:10px"></tr>
+        <tr class="header-space"></tr>
         <tr>
           <td colspan="3">
             <%= form_with(model: [@article, @comment], local: true) do |form| %>
