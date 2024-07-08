@@ -1,13 +1,13 @@
-<tr style="height:10px"></tr>
+<tr class="header-space"></tr>
 <tr>
   <td>
-    <table border="0" cellpadding="0" cellspacing="0">
+    <table class="page-table">
       <tbody>
         <tr>  
           <td align="right">
-            <span class="rank"><%= 1 %>.</span>
+            <span ><%= 1 %>.</span>
           </td>  
-          <td valign="top" class="votelinks">
+          <td valign="top">
             <center>
               <%= button_to upvote_article_comment_path(comment), method: :post, class: "btn btn-sm upvote-button", data: { votable_type: 'Comment', votable_id: comment.id, article_id: comment.article.id } do %>
                 <i class="fas fa-arrow-up"></i>
@@ -17,7 +17,7 @@
               <% end %>
             </center>
           </td>
-          <td valign="top">
+          <td>
             <%= comment.text %>
           </td>
         </tr>
@@ -29,7 +29,7 @@
             <span class="age"><%= time_ago_in_words(comment.created_at) %> ago</span>
           </td>
         </tr>
-        <tr style="height:5px"></tr>
+        <tr class="post-subtext"></tr>
       </tbody>
     </table>
     <%= form_with(model: [comment.article, @reply], local: true) do |form| %>
@@ -37,7 +37,7 @@
         <%= form.text_area :text %>
       </div>
       <%= form.hidden_field :parent_id, value: comment.id %>
-      <div class="actions">
+      <div>
         <%= form.submit "Reply" %>
       </div>
     <% end %>

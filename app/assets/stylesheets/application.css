@@ -75,6 +75,23 @@
     max-width: 1215px;
     overflow-wrap: anywhere;
 }
+  .post-subtext {
+    height:5px;
+  }
+  .header-space {
+    height:10px
+  }
+  .page-table {
+    border:0;
+    border-collapse: collapse;
+  }
+  .page-table td,
+  .page-table th {
+    padding: 0;
+  }
+  .paginate-spacing {
+    padding-top: 10px;
+  }
   
   
 a:link    { color:#000000; text-decoration:none; }
